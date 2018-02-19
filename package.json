@@ -1,7 +1,7 @@
 {
-  "name": "swagger2-to-postman2",
-  "version": "1.1.6",
-  "description": "A module to convert swagger 2.0 JSONs to Postman Collection Format v1",
+  "name": "swagger2-postman2-converter",
+  "version": "0.0.2",
+  "description": "BETA - A module to convert swagger 2.0 JSONs to Postman Collection Format v2",
   "main": "convert.js",
   "scripts": {
     "test": "scripts/test.sh"
@@ -10,7 +10,8 @@
     "jsface": "^2.4.9",
     "lodash": "4.17.5",
     "node-uuid": "^1.4.3",
-    "postman-collection": "^3.0.7"
+    "postman-collection": "^3.0.7",
+    "json-schema-faker": "0.4.7"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,7 @@
     "expect.js": "^0.3.1",
     "jscs": "^2.1.0",
     "jshint": "^2.8.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5"    
   },
   "com_postman_plugin": {
     "type": "importer",

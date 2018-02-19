@@ -2,7 +2,10 @@ var Collection = require('postman-collection').Collection,
     ItemGroup = require('postman-collection').ItemGroup,
     Item = require('postman-collection').Item,
     Request = require('postman-collection').Request,
+    RequestBody = require('postman-collection').RequestBody,
     url = require('url'),
+    schemaFaker = require('json-schema-faker'),
+    _ = require('lodash'),
     META_KEY = 'x-postman-meta',
     Utils = 
     Converter = null;
@@ -206,8 +209,6 @@ Converter = {
         var thisItemGroup, thisItem, rCount;
         // child will be a folder or request
         // depending on the type
-        var a = Math.floor(Math.random() * 1000);
-        // console.log(a + ': Converting child of type: ', child);
 
         if (child.type === "group") {
             // folder
@@ -228,8 +229,7 @@ Converter = {
         }
         else {
             // request
-            thisItem = this.convertSwaggerRequestToItem(child)
-            // console.log(a + ': Returned item: ', JSON.stringify(thisItem));
+            thisItem = this.convertSwaggerRequestToItem(child);
             return thisItem;
         }
     },
@@ -247,9 +247,12 @@ Converter = {
             rPathVariables,
             rMethod = pathItem.method,
             responses,
+            secName,
+            auth = null,
     		thisProduces, thisConsumes,
     		path = pathItem.path,
-    		tempBasePath,
+            tempBasePath,
+            i,
     		hasQueryParams = false,
     		operation = pathItem.request,
     		thisParams = this.getParamsForPathItem(this.baseParams, operation.parameters);
@@ -277,7 +280,6 @@ Converter = {
 	    rUrl = decodeURI(url.resolve(tempBasePath, path))
 	        .replace(/POSTMAN_VARIABLE_OPEN_DB/gi, '{{')
 	        .replace(/POSTMAN_VARIABLE_CLOSE_DB/gi, '}}');
-        console.log('Set request URL: ', rUrl);
 
     	rName = operation.summary;
 
@@ -294,8 +296,20 @@ Converter = {
             rHeaders += 'Content-Type: ' + thisConsumes[0] + '\n';
         }
 
+        // auth done for type=apiKey
+        _.each(operation.security, (security) => {
+            for (var secReq in security) {
+                if (security.hasOwnProperty(secReq)) {
+                    // look up global security definitions for this
+                    if (this.securityDefs[secReq] && (this.securityDefs[secReq].type === "apiKey")) {
+                        thisParams["apiKey"] = this.securityDefs[secReq];
+                    }
+                }
+            }
+        });
 
-		for (param in thisParams) {
+        // Add params to URL / body / headers
+		for (var param in thisParams) {
             if (thisParams.hasOwnProperty(param) && thisParams[param]) {
 
                 // Get default value for .in = query/header/path/formData
@@ -319,7 +333,12 @@ Converter = {
 
                 else if (thisParams[param].in === 'body') {
                     rDataMode = 'raw';
-                    rData = thisParams[param].description;
+                    // Use schema is possible
+                    if (thisParams[param].schema) {
+                        thisParams[param].schema["definitions"] = this.sampleDefinitions;
+                    }
+                    rData = schemaFaker(thisParams[param].schema);
+                    rHeaders += "Content-Type: application/json\n";
                 }
 
                 else if (thisParams[param].in === 'formData') {
@@ -327,7 +346,7 @@ Converter = {
                         rDataMode = 'urlencoded';
                     }
                     else {
-                        rDataMode = 'params';
+                        rDataMode = 'formdata';
                     }
                     rData.push({
                         'key': thisParams[param].name,
@@ -352,8 +371,22 @@ Converter = {
             header: rHeaders
         }),
         item = new Item({name: rName});
+        
+
+        var requestBodyJSON = {
+            mode: rDataMode
+        };
+        if (rDataMode === "formdata") {
+            requestBodyJSON.formdata = rData;
+        }
+        else if (rDataMode === "urlencoded") {
+            requestBodyJSON.urlencoded = rData;
+        }
+        else {
+            requestBodyJSON.raw = JSON.stringify(rData, null, 2);
+        }
+        request.body = new RequestBody(requestBodyJSON);
         item.request = request;
-        console.log('Generated V1 request: ', request);
 
         return item;
     },
@@ -424,6 +457,10 @@ Converter = {
         }
     },
 
+    storeExpandedDefinitions: function (defs) {
+        this.sampleDefinitions = defs;
+    },
+
     // takes in a swagger2 JSON object
     // returns a V2 collection JSON object
 	convert: function (json) {
@@ -441,6 +478,8 @@ Converter = {
         // Read global properties from the JSON:
         this.setBasePath(json);
         this.handleParams(json.parameters);
+        this.securityDefs = json.securityDefinitions; // global auth
+        this.storeExpandedDefinitions(json.definitions);
 
         // Start building out collection:
         this.initializeCollection();

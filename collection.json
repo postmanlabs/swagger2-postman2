@@ -1,15 +1,15 @@
 {
   "item": [
     {
-      "id": "0f48349a-031a-4995-b645-a4d006f2bf79",
+      "id": "a42a9497-d5a3-40fd-a7b7-41b0f804104e",
       "name": "pet",
       "item": [
         {
-          "id": "bbf02405-6524-461c-bee1-896b9558c4ae",
+          "id": "acdf80c2-963e-4b02-b265-3d50b1537d53",
           "name": "findByStatus",
           "item": [
             {
-              "id": "ef4454ec-af50-46fa-a5c0-11537e34e6a0",
+              "id": "902db6cf-899b-485a-a584-f2cfdc4ab07f",
               "name": "Finds Pets by status",
               "request": {
                 "name": "Finds Pets by status",
@@ -47,7 +47,8 @@
                     "value": "application/xml"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -56,11 +57,11 @@
           "event": []
         },
         {
-          "id": "25c4cc6f-336c-4b3f-9472-02c2f01887ce",
+          "id": "954215eb-8325-498d-b752-cd12800743d9",
           "name": "findByTags",
           "item": [
             {
-              "id": "07423204-a9ed-4b77-b7f2-bd2aad2c44eb",
+              "id": "9c03f2f3-aa43-4f56-a861-fa7f722c056e",
               "name": "Finds Pets by tags",
               "request": {
                 "name": "Finds Pets by tags",
@@ -98,7 +99,8 @@
                     "value": "application/xml"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -107,15 +109,15 @@
           "event": []
         },
         {
-          "id": "ad919e9f-3a72-43ad-998a-18d3b82e162f",
+          "id": "ac878620-2d0e-42da-98e7-3ba8b92e7df0",
           "name": "{petId}",
           "item": [
             {
-              "id": "84d7e712-739b-47e5-ac8a-bc01c9655290",
+              "id": "48fa7446-e11c-4d07-8d7f-08373aa83dd4",
               "name": "uploadImage",
               "item": [
                 {
-                  "id": "bcf093dc-d3bd-4f91-b87b-251fa1084f2a",
+                  "id": "76c8ba5e-e92a-449f-b009-5afc2a0b4a27",
                   "name": "uploads an image",
                   "request": {
                     "name": "uploads an image",
@@ -145,7 +147,22 @@
                         "value": "multipart/form-data"
                       }
                     ],
-                    "method": "POST"
+                    "method": "POST",
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "additionalMetadata",
+                          "value": "{{additionalMetadata}}",
+                          "type": "text"
+                        },
+                        {
+                          "key": "file",
+                          "value": "{{file}}",
+                          "type": "text"
+                        }
+                      ]
+                    }
                   },
                   "response": [],
                   "event": []
@@ -154,7 +171,7 @@
               "event": []
             },
             {
-              "id": "3bb410e8-e030-4662-bb84-da778b8d0a03",
+              "id": "33d2e348-4740-43ae-8955-a89827573de4",
               "name": "Find pet by ID",
               "request": {
                 "name": "Find pet by ID",
@@ -170,7 +187,16 @@
                     "swagger",
                     "io"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "api_key_param",
+                      "value": "{{api_key_param}}"
+                    },
+                    {
+                      "key": "",
+                      "value": null
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -183,13 +209,14 @@
                     "value": "application/xml"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
             },
             {
-              "id": "dd74049d-4a7c-4b06-9812-fbb0bce06505",
+              "id": "10919548-bf6d-4cba-80a2-7d59d0669323",
               "name": "Updates a pet in the store with form data",
               "request": {
                 "name": "Updates a pet in the store with form data",
@@ -218,13 +245,26 @@
                     "value": "application/x-www-form-urlencoded"
                   }
                 ],
-                "method": "POST"
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "{{name}}"
+                    },
+                    {
+                      "key": "status",
+                      "value": "{{status}}"
+                    }
+                  ]
+                }
               },
               "response": [],
               "event": []
             },
             {
-              "id": "a9631ebc-185e-47ed-8c9d-5fb4a433419c",
+              "id": "b205e23b-af65-40f5-957d-921a286b5b48",
               "name": "Deletes a pet",
               "request": {
                 "name": "Deletes a pet",
@@ -253,7 +293,8 @@
                     "value": "{{api_key}}"
                   }
                 ],
-                "method": "DELETE"
+                "method": "DELETE",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -262,7 +303,7 @@
           "event": []
         },
         {
-          "id": "6c6dc435-76af-4e60-af6f-607518276558",
+          "id": "9364a03e-1d53-45cc-9dd3-d62bab677a2f",
           "name": "Add a new pet to the store",
           "request": {
             "name": "Add a new pet to the store",
@@ -288,15 +329,23 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
-            "method": "POST"
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"id voluptate elit non\",\n  \"photoUrls\": [\n    \"nostrud ut ex\",\n    \"elit ut ut commod\",\n    \"dolore labore et nulla culpa\",\n    \"ut proident laboris\",\n    \"sed proident minim \"\n  ],\n  \"tags\": [\n    {\n      \"name\": \"mollit\",\n      \"id\": -26536864\n    },\n    {\n      \"name\": \"exercitation quis cillum laborum\"\n    },\n    {\n      \"id\": -5490431\n    }\n  ],\n  \"id\": 25656059\n}"
+            }
           },
           "response": [],
           "event": []
         },
         {
-          "id": "00917f57-01b0-44e9-a880-a5f73c84a871",
+          "id": "15b9f1d4-e91d-481c-90df-18993a084d62",
           "name": "Update an existing pet",
           "request": {
             "name": "Update an existing pet",
@@ -322,9 +371,17 @@
               {
                 "key": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
-            "method": "PUT"
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"est dolor et deserunt\",\n  \"photoUrls\": [\n    \"ipsum dolor elit sed fugiat\",\n    \"Excepteur\",\n    \"sint minim occaecat officia\",\n    \"ex ut\"\n  ]\n}"
+            }
           },
           "response": [],
           "event": []
@@ -333,15 +390,15 @@
       "event": []
     },
     {
-      "id": "0335b95a-0893-4347-82a2-4549755827dd",
+      "id": "f0323f37-d688-4379-95fa-5891167ee7bd",
       "name": "store",
       "item": [
         {
-          "id": "ce42962e-79c6-4528-bbb5-c3c1f0d52d22",
+          "id": "bfac0761-e960-4bd6-a71f-01ea9279c8ad",
           "name": "inventory",
           "item": [
             {
-              "id": "a27ec946-a401-4acd-a275-2b2670f2c6c0",
+              "id": "b588c51d-599f-42cc-af82-7b65eb0e6019",
               "name": "Returns pet inventories by status",
               "request": {
                 "name": "Returns pet inventories by status",
@@ -357,7 +414,16 @@
                     "swagger",
                     "io"
                   ],
-                  "query": [],
+                  "query": [
+                    {
+                      "key": "api_key_param",
+                      "value": "{{api_key_param}}"
+                    },
+                    {
+                      "key": "",
+                      "value": null
+                    }
+                  ],
                   "variable": []
                 },
                 "header": [
@@ -366,7 +432,8 @@
                     "value": "application/json, application/xml"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -375,15 +442,15 @@
           "event": []
         },
         {
-          "id": "f5f2e0a9-436c-4d45-9c3f-753ee6dfe7f0",
+          "id": "429f4bac-1960-4263-b078-e60c92c8e179",
           "name": "order",
           "item": [
             {
-              "id": "69230e06-3d19-4555-8c3f-a27e7f60e8e3",
+              "id": "6dd9a455-be20-4fcf-8b04-8f8256293d2f",
               "name": "{orderId}",
               "item": [
                 {
-                  "id": "11c4424c-cfb4-420a-9e15-844f5c96d7a3",
+                  "id": "87329a1f-3a4e-475a-a27b-11b43a22ed76",
                   "name": "Find purchase order by ID",
                   "request": {
                     "name": "Find purchase order by ID",
@@ -409,13 +476,14 @@
                         "value": "application/xml, application/json"
                       }
                     ],
-                    "method": "GET"
+                    "method": "GET",
+                    "body": {}
                   },
                   "response": [],
                   "event": []
                 },
                 {
-                  "id": "16336324-eb0c-4a17-955c-4ce51836f99a",
+                  "id": "f6c169f9-33c5-4e6f-8bcc-28e880563d1c",
                   "name": "Delete purchase order by ID",
                   "request": {
                     "name": "Delete purchase order by ID",
@@ -441,7 +509,8 @@
                         "value": "application/xml, application/json"
                       }
                     ],
-                    "method": "DELETE"
+                    "method": "DELETE",
+                    "body": {}
                   },
                   "response": [],
                   "event": []
@@ -450,7 +519,7 @@
               "event": []
             },
             {
-              "id": "06a32248-e02e-4d2c-aed9-468753426c8f",
+              "id": "814650cd-6191-4d76-a55d-64fc5ff86e54",
               "name": "Place an order for a pet",
               "request": {
                 "name": "Place an order for a pet",
@@ -473,9 +542,17 @@
                   {
                     "key": "Accept",
                     "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
-                "method": "POST"
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"complete\": false,\n  \"shipDate\": \"4287-01-22T03:47:33.339Z\",\n  \"quantity\": 4193720\n}"
+                }
               },
               "response": [],
               "event": []
@@ -487,15 +564,15 @@
       "event": []
     },
     {
-      "id": "67ba94b0-6ee4-4fad-9eaa-0bfe7e0cffd8",
+      "id": "53f539bf-9e21-4195-8914-fb1700def95e",
       "name": "user",
       "item": [
         {
-          "id": "5bb7bfeb-a1b5-4037-b732-47975998f8f4",
+          "id": "46985590-9e27-4942-8368-c6a9e5961164",
           "name": "createWithArray",
           "item": [
             {
-              "id": "3f11d662-1097-4c65-bca7-3a6c7a0e83c6",
+              "id": "e46ed1d3-d779-4c28-9718-672b5890a8a3",
               "name": "Creates list of users with given input array",
               "request": {
                 "name": "Creates list of users with given input array",
@@ -518,9 +595,17 @@
                   {
                     "key": "Accept",
                     "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
-                "method": "POST"
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {}\n]"
+                }
               },
               "response": [],
               "event": []
@@ -529,11 +614,11 @@
           "event": []
         },
         {
-          "id": "55d5d927-8eef-4ac6-a670-02379cd410ba",
+          "id": "f92a1620-a4d0-4473-904d-f1b597d6b31a",
           "name": "createWithList",
           "item": [
             {
-              "id": "f2ba445e-4d03-4129-bb86-c3eab8bded3f",
+              "id": "e4729584-29c8-4485-8a3a-31ab13c01945",
               "name": "Creates list of users with given input array",
               "request": {
                 "name": "Creates list of users with given input array",
@@ -556,9 +641,17 @@
                   {
                     "key": "Accept",
                     "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
-                "method": "POST"
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {},\n  {\n    \"email\": \"in proident dolore\",\n    \"id\": 5294017\n  },\n  {}\n]"
+                }
               },
               "response": [],
               "event": []
@@ -567,11 +660,11 @@
           "event": []
         },
         {
-          "id": "7b248a0e-752a-41da-8d16-657190aec1ec",
+          "id": "baf3363b-16b2-495f-9103-6cefa3a60dc8",
           "name": "login",
           "item": [
             {
-              "id": "4cf82e62-3fe9-4cf9-894b-ae5e8f5f2e36",
+              "id": "a2a4eec9-2db8-40f4-9aa6-ede7f53f828f",
               "name": "Logs user into the system",
               "request": {
                 "name": "Logs user into the system",
@@ -609,7 +702,8 @@
                     "value": "application/xml, application/json"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -618,11 +712,11 @@
           "event": []
         },
         {
-          "id": "99068172-d721-4c55-a6bf-36510283ee73",
+          "id": "04af3d93-99c7-4057-ba79-1b811a0b42ca",
           "name": "logout",
           "item": [
             {
-              "id": "27058f0d-5fa5-4c75-afc2-25fd0e047f61",
+              "id": "f6d51d37-0ea5-47c4-8cec-d7db7bfbdac6",
               "name": "Logs out current logged in user session",
               "request": {
                 "name": "Logs out current logged in user session",
@@ -647,7 +741,8 @@
                     "value": "application/xml, application/json"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -656,11 +751,11 @@
           "event": []
         },
         {
-          "id": "a870c641-e8a0-4f09-a24f-503946342614",
+          "id": "526d34b6-a94a-4a2d-b688-a6cc4243ce10",
           "name": "{username}",
           "item": [
             {
-              "id": "9176c4f4-e139-43d9-9c11-ddf24475d4f2",
+              "id": "1e080505-4e07-41b8-b0b1-ade5ecf90110",
               "name": "Get user by user name",
               "request": {
                 "name": "Get user by user name",
@@ -685,13 +780,14 @@
                     "value": "application/xml, application/json"
                   }
                 ],
-                "method": "GET"
+                "method": "GET",
+                "body": {}
               },
               "response": [],
               "event": []
             },
             {
-              "id": "121132d9-de22-4c87-a0ca-afbf92dae38a",
+              "id": "1a45b463-0f62-438d-bc39-7f1efd1ebcf4",
               "name": "Updated user",
               "request": {
                 "name": "Updated user",
@@ -714,15 +810,23 @@
                   {
                     "key": "Accept",
                     "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
                   }
                 ],
-                "method": "PUT"
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}"
+                }
               },
               "response": [],
               "event": []
             },
             {
-              "id": "59b9ff15-4690-44c5-96d2-5547b6209e0f",
+              "id": "0b7f5bd4-8095-40e5-b295-5bcb80d76916",
               "name": "Delete user",
               "request": {
                 "name": "Delete user",
@@ -747,7 +851,8 @@
                     "value": "application/xml, application/json"
                   }
                 ],
-                "method": "DELETE"
+                "method": "DELETE",
+                "body": {}
               },
               "response": [],
               "event": []
@@ -756,7 +861,7 @@
           "event": []
         },
         {
-          "id": "26e333c9-76f1-4a80-a18b-2f0370d0d155",
+          "id": "a2e3cade-b291-448f-baba-576c8e9ff9f4",
           "name": "Create user",
           "request": {
             "name": "Create user",
@@ -778,9 +883,17 @@
               {
                 "key": "Accept",
                 "value": "application/xml, application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
-            "method": "POST"
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userStatus\": 81520073,\n  \"email\": \"veniam in eu Lorem\",\n  \"username\": \"occaecat\"\n}"
+            }
           },
           "response": [],
           "event": []
@@ -796,7 +909,7 @@
     "type": "text/plain"
   },
   "info": {
-    "id": "7bfedfb1-4ae6-4a8f-8519-2b54d0911c5c",
+    "id": "fc9c611c-0886-4eb5-b2c3-1023729bc5a5",
     "name": "Swagger Petstore",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   }
