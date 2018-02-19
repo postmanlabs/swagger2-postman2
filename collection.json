@@ -1,0 +1,803 @@
+{
+  "item": [
+    {
+      "id": "0f48349a-031a-4995-b645-a4d006f2bf79",
+      "name": "pet",
+      "item": [
+        {
+          "id": "bbf02405-6524-461c-bee1-896b9558c4ae",
+          "name": "findByStatus",
+          "item": [
+            {
+              "id": "ef4454ec-af50-46fa-a5c0-11537e34e6a0",
+              "name": "Finds Pets by status",
+              "request": {
+                "name": "Finds Pets by status",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "pet",
+                    "findByStatus"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "available"
+                    },
+                    {
+                      "key": "",
+                      "value": null
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "25c4cc6f-336c-4b3f-9472-02c2f01887ce",
+          "name": "findByTags",
+          "item": [
+            {
+              "id": "07423204-a9ed-4b77-b7f2-bd2aad2c44eb",
+              "name": "Finds Pets by tags",
+              "request": {
+                "name": "Finds Pets by tags",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "pet",
+                    "findByTags"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [
+                    {
+                      "key": "tags",
+                      "value": "{{tags}}"
+                    },
+                    {
+                      "key": "",
+                      "value": null
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "ad919e9f-3a72-43ad-998a-18d3b82e162f",
+          "name": "{petId}",
+          "item": [
+            {
+              "id": "84d7e712-739b-47e5-ac8a-bc01c9655290",
+              "name": "uploadImage",
+              "item": [
+                {
+                  "id": "bcf093dc-d3bd-4f91-b87b-251fa1084f2a",
+                  "name": "uploads an image",
+                  "request": {
+                    "name": "uploads an image",
+                    "url": {
+                      "protocol": "http",
+                      "path": [
+                        "v2",
+                        "pet",
+                        ":petId",
+                        "uploadImage"
+                      ],
+                      "host": [
+                        "petstore",
+                        "swagger",
+                        "io"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      }
+                    ],
+                    "method": "POST"
+                  },
+                  "response": [],
+                  "event": []
+                }
+              ],
+              "event": []
+            },
+            {
+              "id": "3bb410e8-e030-4662-bb84-da778b8d0a03",
+              "name": "Find pet by ID",
+              "request": {
+                "name": "Find pet by ID",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "pet",
+                    ":petId"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/xml"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            },
+            {
+              "id": "dd74049d-4a7c-4b06-9812-fbb0bce06505",
+              "name": "Updates a pet in the store with form data",
+              "request": {
+                "name": "Updates a pet in the store with form data",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "pet",
+                    ":petId"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  }
+                ],
+                "method": "POST"
+              },
+              "response": [],
+              "event": []
+            },
+            {
+              "id": "a9631ebc-185e-47ed-8c9d-5fb4a433419c",
+              "name": "Deletes a pet",
+              "request": {
+                "name": "Deletes a pet",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "pet",
+                    ":petId"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  },
+                  {
+                    "key": "api_key",
+                    "value": "{{api_key}}"
+                  }
+                ],
+                "method": "DELETE"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "6c6dc435-76af-4e60-af6f-607518276558",
+          "name": "Add a new pet to the store",
+          "request": {
+            "name": "Add a new pet to the store",
+            "url": {
+              "protocol": "http",
+              "path": [
+                "v2",
+                "pet"
+              ],
+              "host": [
+                "petstore",
+                "swagger",
+                "io"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml, application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "00917f57-01b0-44e9-a880-a5f73c84a871",
+          "name": "Update an existing pet",
+          "request": {
+            "name": "Update an existing pet",
+            "url": {
+              "protocol": "http",
+              "path": [
+                "v2",
+                "pet"
+              ],
+              "host": [
+                "petstore",
+                "swagger",
+                "io"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml, application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT"
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0335b95a-0893-4347-82a2-4549755827dd",
+      "name": "store",
+      "item": [
+        {
+          "id": "ce42962e-79c6-4528-bbb5-c3c1f0d52d22",
+          "name": "inventory",
+          "item": [
+            {
+              "id": "a27ec946-a401-4acd-a275-2b2670f2c6c0",
+              "name": "Returns pet inventories by status",
+              "request": {
+                "name": "Returns pet inventories by status",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "store",
+                    "inventory"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json, application/xml"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "f5f2e0a9-436c-4d45-9c3f-753ee6dfe7f0",
+          "name": "order",
+          "item": [
+            {
+              "id": "69230e06-3d19-4555-8c3f-a27e7f60e8e3",
+              "name": "{orderId}",
+              "item": [
+                {
+                  "id": "11c4424c-cfb4-420a-9e15-844f5c96d7a3",
+                  "name": "Find purchase order by ID",
+                  "request": {
+                    "name": "Find purchase order by ID",
+                    "url": {
+                      "protocol": "http",
+                      "path": [
+                        "v2",
+                        "store",
+                        "order",
+                        ":orderId"
+                      ],
+                      "host": [
+                        "petstore",
+                        "swagger",
+                        "io"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/xml, application/json"
+                      }
+                    ],
+                    "method": "GET"
+                  },
+                  "response": [],
+                  "event": []
+                },
+                {
+                  "id": "16336324-eb0c-4a17-955c-4ce51836f99a",
+                  "name": "Delete purchase order by ID",
+                  "request": {
+                    "name": "Delete purchase order by ID",
+                    "url": {
+                      "protocol": "http",
+                      "path": [
+                        "v2",
+                        "store",
+                        "order",
+                        ":orderId"
+                      ],
+                      "host": [
+                        "petstore",
+                        "swagger",
+                        "io"
+                      ],
+                      "query": [],
+                      "variable": []
+                    },
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/xml, application/json"
+                      }
+                    ],
+                    "method": "DELETE"
+                  },
+                  "response": [],
+                  "event": []
+                }
+              ],
+              "event": []
+            },
+            {
+              "id": "06a32248-e02e-4d2c-aed9-468753426c8f",
+              "name": "Place an order for a pet",
+              "request": {
+                "name": "Place an order for a pet",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "store",
+                    "order"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "POST"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "67ba94b0-6ee4-4fad-9eaa-0bfe7e0cffd8",
+      "name": "user",
+      "item": [
+        {
+          "id": "5bb7bfeb-a1b5-4037-b732-47975998f8f4",
+          "name": "createWithArray",
+          "item": [
+            {
+              "id": "3f11d662-1097-4c65-bca7-3a6c7a0e83c6",
+              "name": "Creates list of users with given input array",
+              "request": {
+                "name": "Creates list of users with given input array",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    "createWithArray"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "POST"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "55d5d927-8eef-4ac6-a670-02379cd410ba",
+          "name": "createWithList",
+          "item": [
+            {
+              "id": "f2ba445e-4d03-4129-bb86-c3eab8bded3f",
+              "name": "Creates list of users with given input array",
+              "request": {
+                "name": "Creates list of users with given input array",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    "createWithList"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "POST"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "7b248a0e-752a-41da-8d16-657190aec1ec",
+          "name": "login",
+          "item": [
+            {
+              "id": "4cf82e62-3fe9-4cf9-894b-ae5e8f5f2e36",
+              "name": "Logs user into the system",
+              "request": {
+                "name": "Logs user into the system",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    "login"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [
+                    {
+                      "key": "username",
+                      "value": "{{username}}"
+                    },
+                    {
+                      "key": "password",
+                      "value": "{{password}}"
+                    },
+                    {
+                      "key": "",
+                      "value": null
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "99068172-d721-4c55-a6bf-36510283ee73",
+          "name": "logout",
+          "item": [
+            {
+              "id": "27058f0d-5fa5-4c75-afc2-25fd0e047f61",
+              "name": "Logs out current logged in user session",
+              "request": {
+                "name": "Logs out current logged in user session",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    "logout"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "a870c641-e8a0-4f09-a24f-503946342614",
+          "name": "{username}",
+          "item": [
+            {
+              "id": "9176c4f4-e139-43d9-9c11-ddf24475d4f2",
+              "name": "Get user by user name",
+              "request": {
+                "name": "Get user by user name",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    ":username"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "GET"
+              },
+              "response": [],
+              "event": []
+            },
+            {
+              "id": "121132d9-de22-4c87-a0ca-afbf92dae38a",
+              "name": "Updated user",
+              "request": {
+                "name": "Updated user",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    ":username"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "PUT"
+              },
+              "response": [],
+              "event": []
+            },
+            {
+              "id": "59b9ff15-4690-44c5-96d2-5547b6209e0f",
+              "name": "Delete user",
+              "request": {
+                "name": "Delete user",
+                "url": {
+                  "protocol": "http",
+                  "path": [
+                    "v2",
+                    "user",
+                    ":username"
+                  ],
+                  "host": [
+                    "petstore",
+                    "swagger",
+                    "io"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml, application/json"
+                  }
+                ],
+                "method": "DELETE"
+              },
+              "response": [],
+              "event": []
+            }
+          ],
+          "event": []
+        },
+        {
+          "id": "26e333c9-76f1-4a80-a18b-2f0370d0d155",
+          "name": "Create user",
+          "request": {
+            "name": "Create user",
+            "url": {
+              "protocol": "http",
+              "path": [
+                "v2",
+                "user"
+              ],
+              "host": [
+                "petstore",
+                "swagger",
+                "io"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml, application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [],
+          "event": []
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [],
+  "description": {
+    "content": "This is a sample server Petstore server.  You can find out more about Swagger at <a href=\"http://swagger.io\">http://swagger.io</a> or on irc.freenode.net, #swagger.  For this sample, you can use the api key \"special-key\" to test the authorization filters",
+    "type": "text/plain"
+  },
+  "info": {
+    "id": "7bfedfb1-4ae6-4a8f-8519-2b54d0911c5c",
+    "name": "Swagger Petstore",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  }
+}
