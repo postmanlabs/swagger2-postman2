@@ -9,12 +9,10 @@
     "test-unit": "scripts/test-unit.sh"
   },
   "dependencies": {
-    "js-yaml": "3.10.0",
-    "jsface": "^2.4.9",
-    "json-schema-faker": "0.4.7",
-    "lodash": "4.17.5",
-    "node-uuid": "^1.4.3",
-    "postman-collection": "^3.0.7"
+    "js-yaml": ">=3.10.0",
+    "json-schema-faker": ">=0.4.7",
+    "lodash": ">=4.17.5",
+    "postman-collection": ">=3.0.7"
   },
   "repository": {
     "type": "git",
