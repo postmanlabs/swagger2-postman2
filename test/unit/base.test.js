@@ -70,9 +70,11 @@ describe('The converter must convert a swagger file', function() {
     var samplePath = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
 
     Converter.convert(samplePath, (err, result) => {
-      expect(result.status).to.equal(true);
-      expect(result.collection).to.have.property('info');
-      expect(result.collection).to.have.property('item');
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].data).to.have.property('info');
+      expect(result.output[0].data).to.have.property('item');
     });
   });
 });
@@ -84,9 +86,11 @@ describe('The converter must convert a swagger object', function() {
     );
 
     Converter.convert(samplePath, (err, result) => {
-      expect(result.status).to.equal(true);
-      expect(result.collection).to.have.property('info');
-      expect(result.collection).to.have.property('item');
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].data).to.have.property('info');
+      expect(result.output[0].data).to.have.property('item');
     });
   });
 });
