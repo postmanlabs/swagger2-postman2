@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "js-yaml": "3.10.0",
-    "jsface": "^2.4.9",
     "json-schema-faker": "0.4.7",
     "lodash": "4.17.5",
     "node-uuid": "^1.4.3",
