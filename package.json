@@ -9,12 +9,12 @@
     "test-unit": "scripts/test-unit.sh"
   },
   "dependencies": {
-    "expect.js": "^0.3.1",
-    "js-yaml": "^3.10.0",
-    "json-schema-faker": "^0.4.7",
-    "lodash": "^4.17.5",
-    "node-uuid": "^1.4.3",
-    "postman-collection": "^3.1.1"
+    "expect.js": "0.3.1",
+    "js-yaml": "3.10.0",
+    "json-schema-faker": "0.4.7",
+    "lodash": "4.17.5",
+    "node-uuid": "1.4.3",
+    "postman-collection": "3.1.1"
   },
   "repository": {
     "type": "git",
@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/postmanlabs/swagger2-postman2",
   "devDependencies": {
-    "chai": "^4.1.2",
+    "chai": "4.1.2",
     "colors": "1.1.2",
     "eslint": "3.4.0",
-    "eslint-plugin-security": "^1.4.0",
-    "istanbul": "^0.4.5",
+    "eslint-plugin-security": "1.4.0",
+    "istanbul": "0.4.5",
     "mocha": "3.0.2",
     "nsp": "3.1.0"
   },
@@ -45,61 +45,6 @@
     "name": "Swagger 2.0 to Postman",
     "source_format": "SWAGGER2.0",
     "source_format_name": "Swagger 2.0",
-    "sample_input":{
-      "swagger": "2.0",
-      "info": {
-        "description": "My API",
-        "version": "1.0.0",
-        "title": "My API",
-        "termsOfService": "http://www.domain.com",
-        "contact": {
-          "name": "support@domain.com"
-        }
-      },
-      "basePath": "/",
-      "schemes": [
-        "http"
-      ],
-      "paths": {
-        "Authorization/LoginAPI": {
-          "post": {
-            "summary": "Authenticates you to the system and produces a session token that will be used for future calls",
-            "description": "",
-            "operationId": "LoginAPI",
-            "consumes": [
-              "application/x-www-form-urlencoded"
-            ],
-            "produces": [
-              "application/json"
-            ],
-            "parameters": [
-              {
-                "in": "formData",
-                "name": "UserName",
-                "description": "Login Username",
-                "required": true,
-                "type": "string",
-                "default": "Zaphod"
-              },
-              {
-                "in": "formData",
-                "name": "Password",
-                "description": "Password",
-                "required": true,
-                "type": "string"
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "API Response with session ID if login is allowed",
-                "schema": {
-                  "$ref": "#/definitions/Authorization"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    "sample_input":"{\r\n      \"swagger\": \"2.0\",\r\n      \"info\": {\r\n        \"description\": \"My API\",\r\n        \"version\": \"1.0.0\",\r\n        \"title\": \"My API\",\r\n        \"termsOfService\": \"http:\/\/www.domain.com\",\r\n        \"contact\": {\r\n          \"name\": \"support@domain.com\"\r\n        }\r\n      },\r\n      \"basePath\": \"\/\",\r\n      \"schemes\": [\r\n        \"http\"\r\n      ],\r\n      \"paths\": {\r\n        \"Authorization\/LoginAPI\": {\r\n          \"post\": {\r\n            \"summary\": \"Authenticates you to the system and produces a session token that will be used for future calls\",\r\n            \"description\": \"\",\r\n            \"operationId\": \"LoginAPI\",\r\n            \"consumes\": [\r\n              \"application\/x-www-form-urlencoded\"\r\n            ],\r\n            \"produces\": [\r\n              \"application\/json\"\r\n            ],\r\n            \"parameters\": [\r\n              {\r\n                \"in\": \"formData\",\r\n                \"name\": \"UserName\",\r\n                \"description\": \"Login Username\",\r\n                \"required\": true,\r\n                \"type\": \"string\",\r\n                \"default\": \"Zaphod\"\r\n              }\r\n            ],\r\n            \"responses\": {\r\n              \"200\": {\r\n                \"description\": \"API Response with session ID if login is allowed\",\r\n                \"schema\": {\r\n                  \"$ref\": \"#\/definitions\/Authorization\"\r\n                }\r\n              }\r\n            }\r\n          }\r\n        }\r\n      }\r\n    }"
   }
 }
