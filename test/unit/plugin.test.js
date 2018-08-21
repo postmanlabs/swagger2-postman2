@@ -27,8 +27,8 @@ describe(packageJson.name, function() {
   });
 
   it('should convert the sample input correctly', function (done) {
-    package.convert(sampleInput, function(err, result) {
-      expect(err).to.be.null;
+    package.convert(sampleInput, {}, function(err, result) {
+      expect(err).to.be(null);
       expect(result.result).to.equal(true);
       result.output.forEach(function (element) {
         expect(element.type).to.be.within('collection', 'request');

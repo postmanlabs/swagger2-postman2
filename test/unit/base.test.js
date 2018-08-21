@@ -16,7 +16,10 @@ describe('The converter must identify valid specs: ', function () {
 
     it(samplePath + ' as valid', function () {
       var swagger = require(samplePath),
-        convertResult = Converter.validate(swagger);
+        convertResult = Converter.validate({
+          type: 'json',
+          data: swagger
+        });
 
       expect(convertResult.result).to.equal(true);
     });
@@ -32,7 +35,10 @@ describe('The converter must identify invalid specs: ', function () {
 
     it(samplePath + ' as invalid', function () {
       var swagger = require(samplePath),
-        convertResult = Converter.validate(swagger);
+        convertResult = Converter.validate({
+          type: 'json',
+          data: swagger
+        });
 
       expect(convertResult.result).to.equal(false);
     });
@@ -69,7 +75,7 @@ describe('The converter must convert a swagger file', function() {
   it('Sampleswagger.json', function() {
     var samplePath = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
 
-    Converter.convert(samplePath, (err, result) => {
+    Converter.convert({ type: 'string', data: samplePath }, {}, (err, result) => {
       expect(result.result).to.equal(true);
       expect(result.output.length).to.equal(1);
       expect(result.output[0].type).to.have.equal('collection');
@@ -85,7 +91,7 @@ describe('The converter must convert a swagger object', function() {
       fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8')
     );
 
-    Converter.convert(samplePath, (err, result) => {
+    Converter.convert({ type: 'json', data: samplePath }, {}, (err, result) => {
       expect(result.result).to.equal(true);
       expect(result.output.length).to.equal(1);
       expect(result.output[0].type).to.have.equal('collection');
