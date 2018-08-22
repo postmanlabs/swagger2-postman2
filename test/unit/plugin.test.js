@@ -37,7 +37,7 @@ describe(packageJson.name, function() {
           expect(element.data).to.have.property('item');
         }
         else {
-          expect(result.data).to.have.property('url');
+          expect(element.data).to.have.property('url');
         }
       });
 
