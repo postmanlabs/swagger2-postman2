@@ -1,23 +1,9 @@
 var converter = require('../index.js'),
-  //fs = require('fs'),
   expect = require('expect.js'),
   path = require('path');
 
 /* global describe, it */
 describe('the converter', function () {
-  //var samples = fs.readdirSync(path.join(__dirname, 'data'));
-
-  // samples.map(function (sample) {
-  //   var samplePath = path.join(__dirname, 'data', sample);
-
-  //   it('must convert ' + samplePath + ' to a postman collection', function () {
-  //     var swagger = require(samplePath),
-  //       converter = new Swagger2Postman(),
-  //       convertResult = converter.convert(swagger);
-
-  //     expect(convertResult.status).to.be('passed');
-  //   });
-  // });
 
   // it('must read values from the "x-postman-meta" key', function () {
   //   var samplePath = path.join(__dirname, 'data/valid_swagger', 'swagger_aws.json'),
@@ -39,17 +25,22 @@ describe('the converter', function () {
 
   // });
 
-  // it('must read values consumes/produces', function () {
-  //   var samplePath = path.join(__dirname, 'data', 'swagger_aws_2.json'),
-  //     swagger = require(samplePath),
-  //     converter = new Swagger2Postman(),
-  //     convertResult = converter.convert(swagger),
-  //     request = convertResult.collection.requests[0];
-  //   // Make sure that currentHelper and helperAttributes are processed
+  it('must read values consumes/produces', function () {
+    var samplePath = path.join(__dirname, 'data/valid_swagger', 'swagger_aws_2.json');
 
-  //   expect(request.headers.indexOf('Accept: text/json') > -1).to.be(true);
-  //   expect(request.headers.indexOf('Content-Type: application/json') > -1).to.be(true);
-  // });
+    converter.convert({ type: 'file', data: samplePath }, {}, function(err, convertResult) {
+      if (err) {
+        return console.log(err);
+      }
+      // Make sure that currentHelper and helperAttributes are processed
+      convertResult.output.forEach(function(element) {
+        expect(element.type).to.equal('collection');
+        expect(JSON.stringify(element.data.item[0].request.header[0])).to.equal('{"key":"Accept","value":"text/json"}');
+        expect(JSON.stringify(element.data.item[0].request.header[0])).to.equal(
+          '{"key":"Content-Type","value":"application/json"}');
+      });
+    });
+  });
 
   // it('should obey the includeQueryParams option', function () {
   //   var options = {
