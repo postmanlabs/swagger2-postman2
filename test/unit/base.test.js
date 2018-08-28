@@ -163,7 +163,7 @@ describe('the converter', function () {
       if (err) {
         return console.log(err);
       }
-      // Make sure that currentHelper and helperAttributes are processed
+      // Make sure that path params are updated and their respective default values
       convertResult.output.forEach(function(element) {
         expect(element.type).to.equal('collection');
         expect(element.data.item[0].request.url.path.indexOf(':ownerId') > -1).to.equal(true);
