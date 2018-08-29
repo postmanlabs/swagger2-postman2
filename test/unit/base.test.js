@@ -132,9 +132,9 @@ describe('the converter', function () {
       convertResult.output.forEach(function(element) {
         expect(element.type).to.equal('collection');
         expect(JSON.stringify(element.data.item[0].request.header[0])).to
-          .equal('{"key":"Accept","value":"text/json"}');
-        expect(JSON.stringify(element.data.item[0].request.header[1])).to.equal(
-          '{"key":"Content-Type","value":"application/json"}');
+          .equal('{"key":"Content-Type","value":"application/json"}');
+        expect(JSON.stringify(element.data.item[0].request.header[1])).to
+        .equal('{"key":"Accept","value":"text/json"}');
       });
     });
   });
