@@ -139,23 +139,6 @@ describe('the converter', function () {
     });
   });
 
-  // it('should obey the includeQueryParams option', function () {
-  //   var options = {
-  //       includeQueryParams: false
-  //     },
-  //     samplePath = path.join(__dirname, 'data', 'sampleswagger.json'),
-  //     swagger = require(samplePath),
-  //     converterWithOptions = new Swagger2Postman(options),
-  //     convertWithOptionsResult = converterWithOptions.convert(swagger),
-  //     converterWithoutOptions = new Swagger2Postman(),
-  //     convertWithoutOptionsResult = converterWithoutOptions.convert(swagger);
-  //   // Make sure that currentHelper and helperAttributes are processed
-
-  //   expect(convertWithoutOptionsResult.collection.requests[2].url.indexOf('status=available') > -1).to.be(true);
-  //   expect(convertWithOptionsResult.collection.requests[3].url.indexOf('{') === -1).to.be(true);
-  //   expect(convertWithoutOptionsResult.collection.requests[3].url.indexOf('{') > 0).to.be(true);
-  // });
-
   it('should convert path paramters to postman-compatible paramters', function () {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger2-with-params.json');
 
@@ -168,8 +151,8 @@ describe('the converter', function () {
         expect(element.type).to.equal('collection');
         expect(element.data.item[0].request.url.path.indexOf(':ownerId') > -1).to.equal(true);
         expect(element.data.item[0].request.url.path.indexOf(':petId') > -1).to.equal(true);
-        // expect(element.data.item[0].request.url.path.query.indexof({ key: 'ownerId',
-        //   value: 42 })).to.be(true);
+        expect(element.data.item[0].request.url.variable).to.deep.include({ type: 'any',
+          value: '42', key: 'ownerId' });
       });
     });
   });
