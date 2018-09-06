@@ -9,16 +9,16 @@ Exports the following functions:
 # Conversion Schema
 | *Postman* | *Swagger2* |
 | --- | --- |
-| CollectionName | info.title |
-| Description | info.Descirption |
-| Folder | Paths.path |
-| Request | Path.method (method is any http method) |
-| Request.headers | params (`in = header` ) |
-| Request.body | params (`in = body or formBody`)|
-| Request.url.raw | host+basePath |
-| Request.url.params | params (`in = query`)|
-| Request.url.variables | params (`in = path`)|
+| collectionName | info.title |
+| description | info.Descirption |
+| folderName | paths.path |
+| requestName, request.method | path.method (`all possible http methods`) |
+| request.headers | params (`in = header` ) |
+| request.body | params (`in = body or formBody`) |
+| request.url.raw | scheme(http or https) + '://' + host + basePath |
+| request.url.params | params (`in = query`)|
+| request.url.variables | params (`in = path`) |
 | Content-Type header | consumes |
 | Accept header | produces |
-| Collection_Variables | definitions |
-| apikey in (query or header) | securityDefinitions(type:apiKey) |
+| collectionVariables | definitions |
+| apikey in (query or header) | securityDefinitions(`type = apiKey`) |
