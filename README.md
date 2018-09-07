@@ -26,7 +26,7 @@ Exports the following functions:
 ### <a name="header/path/query_example"></a>Header/Query/Path param conversion example
 | swagger | postman |
 | --- | --- |
-| name: api-key	<br/>description: session token<br/>in: header<br/>type: integer<br/>required: false<br/>default: defaultValue |{<br/>&emsp;"key": "api-key",<br/>&emsp;"value": defaultValue,<br/>&emsp;"description": "session token"<br>&emsp;"disabled": true<br>}|
+| name: api-key	<br/>description: session token<br/>in: header<br/>type: integer<br/>default: defaultValue |{<br/>&emsp;"key": "api-key",<br/>&emsp;"value": defaultValue,<br/>&emsp;"description": "session token"<br>}|
 ### <a name="body_example"></a> Body param conversion example
 #### If `in = body`
 | swagger | postman |
