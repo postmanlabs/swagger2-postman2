@@ -30,14 +30,19 @@ Exports the following functions:
 | name: api-key	<br/>description: session token<br/>in: header<br/>type: integer<br/>required: false |header: [{<br/>&emsp;"key": "role-id",<br/>&emsp;"value": defaultValue,<br/>&emsp;"description": "role identifier number"<br>&emsp;"disabled": true<br>}]|
 ##### <a name="body_example"></a> Body param conversion example
 if `in = body`
+
 | swagger | postman |
 | --- | --- |
-|name: role-id<br/>description: role identifier number<br/>in: header<br/>schema: \<schemaObject\>|"body": {<br/>&emsp;"mode": "raw",<br/>&emsp;"raw": json-schema-faker(\<schemaObject\>)<br/>}|
+| name: role-id<br/>description: role identifier number<br/>in: header<br/>schema: \<schemaObject\> |"body": {<br/>&emsp;"mode": "raw",<br/>&emsp;"raw": json-schema-faker(\<schemaObject\>)<br/>} |
+
 if `in = formData` and `consumes = application/x-www-form-urlencoded` 
+
 | swagger | postman |
 | --- | --- |
-|name: role-id<br/>description: role identifier number<br/>in: header<br/>default: defaultValue|"body": {<br/>&emsp;"mode": "urlencoded",<br/>&emsp;"urlencoded": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>}|
+| name: role-id<br/>description: role identifier number<br/>in: header<br/>default: defaultValue | "body": {<br/>&emsp;"mode": "urlencoded",<br/>&emsp;"urlencoded": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>} |
+
 if `in = formData` and `consumes = multipart/form-data` 
+
 | swagger | postman |
 | --- | --- |
-|name: role-id<br/>description: role identifier number<br/>in: header<br/>default: defaultValue|"body": {<br/>&emsp;"mode": "formdata",<br/>&emsp;"formdata": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>}|
+| name: role-id<br/>description: role identifier number<br/>in: header<br/>default: defaultValue | "body": {<br/>&emsp;"mode": "formdata",<br/>&emsp;"formdata": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>} |
