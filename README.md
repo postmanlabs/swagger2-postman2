@@ -15,13 +15,12 @@ Exports the following functions:
 | requestName| method.summary \|\| method.operationId \|\| request.url.raw(in postman) | - | - |
 | request.method | path.method (`all possible http methods`) | - | - |
 | request.headers | params (`in = header` ) | - |<a href="#header/path/query_example">here</a>|
-| request.body | params (`in = body or formBody`) | - | <a href="#body_example">here</a> |
+| request.body | params (`in = body or formBody`) | default(true)-use json-schema-faker for body conversion | <a href="#body_example">here</a> |
 | request.url.raw | scheme(http or https) + '://' + host + basePath | - | - |
 | request.url.params | params (`in = query`)| - | <a href="#header/path/query_example">here</a> |
 | request.url.variables | params (`in = path`) | - | <a href="#header/path/query_example">here</a> |
 | Content-Type header | consumes | default(true) - add consumes to header | - |
 | Accept header | produces | default(true) - add produces to header | - |
-| collectionVariables | definitions | - | - |
 | apikey in (query or header) | securityDefinitions(`type = apiKey`) | - | - |
 
 ### <a name="header/path/query_example"></a>Header/Query/Path param conversion example
