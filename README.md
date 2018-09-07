@@ -14,35 +14,32 @@ Exports the following functions:
 | folderName | paths.path | - | - |
 | requestName| method.summary \|\| method.operationId \|\| request.url.raw(in postman) | - | - |
 | request.method | path.method (`all possible http methods`) | - | - |
-| request.headers | params (`in = header` ) | - |<a href="#headers_example">here</a>|
+| request.headers | params (`in = header` ) | - |<a href="#header/path/query_example">here</a>|
 | request.body | params (`in = body or formBody`) | - | <a href="#body_example">here</a> |
 | request.url.raw | scheme(http or https) + '://' + host + basePath | - | - |
-| request.url.params | params (`in = query`)| - | - |
-| request.url.variables | params (`in = path`) | - | - |
+| request.url.params | params (`in = query`)| - | <a href="#header/path/query_example">here</a> |
+| request.url.variables | params (`in = path`) | - | <a href="#header/path/query_example">here</a> |
 | Content-Type header | consumes | default(true) - add consumes to header | - |
 | Accept header | produces | default(true) - add produces to header | - |
 | collectionVariables | definitions | - | - |
 | apikey in (query or header) | securityDefinitions(`type = apiKey`) | - | - |
 
-##### <a name="headers_example"></a>Header param conversion example
+### <a name="header/path/query_example"></a>Header/Query/Path param conversion example
 | swagger | postman |
 | --- | --- |
-| name: api-key	<br/>description: session token<br/>in: header<br/>type: integer<br/>required: false |header: [{<br/>&emsp;"key": "role-id",<br/>&emsp;"value": defaultValue,<br/>&emsp;"description": "role identifier number"<br>&emsp;"disabled": true<br>}]|
-##### <a name="body_example"></a> Body param conversion example
-if `in = body`
-
+| name: api-key	<br/>description: session token<br/>in: header<br/>type: integer<br/>required: false<br/>default: defaultValue |{<br/>&emsp;"key": "api-key",<br/>&emsp;"value": defaultValue,<br/>&emsp;"description": "session token"<br>&emsp;"disabled": true<br>}|
+### <a name="body_example"></a> Body param conversion example
+#### If `in = body`
 | swagger | postman |
 | --- | --- |
-| name: role-id<br/>description: role identifier number<br/>in: header<br/>schema: \<schemaObject\> |"body": {<br/>&emsp;"mode": "raw",<br/>&emsp;"raw": json-schema-faker(\<schemaObject\>)<br/>} |
-
-if `in = formData` and `consumes = application/x-www-form-urlencoded` 
-
+|name: role-id<br/>description: role identifier number<br/>in: body<br/>schema: \<schemaObject\>|"body": {<br/>&emsp;"mode": "raw",<br/>&emsp;"raw": json-schema-faker(\<schemaObject\>)<br/>}|
+#### If `in = formData` and `consumes = application/x-www-form-urlencoded` 
 | swagger | postman |
 | --- | --- |
-| name: role-id<br/>description: role identifier number<br/>in: header<br/>default: defaultValue | "body": {<br/>&emsp;"mode": "urlencoded",<br/>&emsp;"urlencoded": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>} |
-
-if `in = formData` and `consumes = multipart/form-data` 
-
+|name: role-id<br/>description: role identifier number<br/>in: formData<br/>default: defaultValue|"body": {<br/>&emsp;"mode": "urlencoded",<br/>&emsp;"urlencoded": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>}|
+> All parmas with above condition are added to urlencoded array.<br>
+#### If `in = formData` and `consumes = multipart/form-data` 
 | swagger | postman |
 | --- | --- |
-| name: role-id<br/>description: role identifier number<br/>in: header<br/>default: defaultValue | "body": {<br/>&emsp;"mode": "formdata",<br/>&emsp;"formdata": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>} |
+|name: role-id<br/>description: role identifier number<br/>in: formData<br/>default: defaultValue|"body": {<br/>&emsp;"mode": "formdata",<br/>&emsp;"formdata": [{<br/>&emsp;&emsp;"key": "role-id",<br/>&emsp;&emsp;"value": defaultValue,<br>&emsp;&emsp;"type": "text",<br>&emsp;}]<br/>}|
+> All parmas with above condition are added to formdata array.
