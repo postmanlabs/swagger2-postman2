@@ -28,7 +28,7 @@ Exports the following functions:
 | swagger | postman |
 | --- | --- |
 | name: api-key	<br/>description: session token<br/>in: header<br/>type: integer<br/>required: false |header: [{<br/>&emsp;"key": "role-id",<br/>&emsp;"value": defaultValue,<br/>&emsp;"description": "role identifier number"<br>&emsp;"disabled": true<br>}]|
-##### <a name="#body_example"></a> Body param conversion example
+##### <a name="body_example"></a> Body param conversion example
 if `in = body`
 | swagger | postman |
 | --- | --- |
