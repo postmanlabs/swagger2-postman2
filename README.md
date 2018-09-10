@@ -12,10 +12,10 @@ Exports the following functions:
 | collectionName | info.title | - | - |
 | description | info.description | - | - |
 | folderName | paths.path | - | - |
-| requestName| method.summary \|\| method.operationId \|\| request.url.raw(in postman) | - | - |
+| requestName| method.summary \|\| method.operationId \|\| request.url.raw(in postman) | default('operationId') -(`requestName`) enum[['operationId','summary','url'] | - |
 | request.method | path.method (`all possible http methods`) | - | - |
 | request.headers | params (`in = header` ) | - |<a href="#header/path/query_example">here</a>|
-| request.body | params (`in = body or formBody`) | default(true)-use json-schema-faker for body conversion | <a href="#body_example">here</a> |
+| request.body | params (`in = body or formBody`) | default(true)-(`schemaFaker`)use json-schema-faker for body conversion | <a href="#body_example">here</a> |
 | request.url.raw | scheme(http or https) + '://' + host + basePath | - | - |
 | request.url.params | params (`in = query`)| - | <a href="#header/path/query_example">here</a> |
 | request.url.variables | params (`in = path`) | - | <a href="#header/path/query_example">here</a> |
