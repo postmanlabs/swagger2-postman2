@@ -72,7 +72,7 @@ describe('Helpers', function () {
 });
 
 describe('The converter must convert a swagger file', function() {
-  it('Sampleswagger.json', function() {
+  it('Sampleswagger.json', function(done) {
 
     Converter.convert({ type: 'file', data: path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json') },
       {}, (err, result) => {
@@ -83,11 +83,12 @@ describe('The converter must convert a swagger file', function() {
         expect(result.output[0].data).to.have.property('info');
         expect(result.output[0].data).to.have.property('item');
       });
+    done();
   });
 });
 
 describe('The converter must convert a swagger object', function() {
-  it('Sampleswagger.json', function() {
+  it('Sampleswagger.json', function(done) {
     var samplePath = JSON.parse(
       fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8')
     );
@@ -99,35 +100,33 @@ describe('The converter must convert a swagger object', function() {
       expect(result.output[0].data).to.have.property('info');
       expect(result.output[0].data).to.have.property('item');
     });
+    done();
   });
 });
 
 //added from converter-spec
 describe('the converter', function () {
 
-  it('must read values from the "x-postman-meta" key', function () {
+  it('must read values from the "x-postman-meta" key', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');
 
-    Converter.convert({ type: 'file', data: samplePath }, {}, function(err, convertResult) {
-      if (err) {
-        return console.log(err);
-      }
+    Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
+      expect(err).to.be.null;
       // Make sure that currentHelper and helperAttributes are processed
       convertResult.output.forEach(function(element) {
         expect(element.type).to.equal('collection');
         expect(element.data.item[0].request).to.have.key(['auth', 'body', 'header', 'method', 'name', 'url']);
         expect(element.data.item[0].request.auth.type).to.equal('awsv4');
       });
+      done();
     });
   });
 
-  it('must read values consumes/produces', function () {
+  it('must read values consumes/produces', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws_2.json');
 
-    Converter.convert({ type: 'file', data: samplePath }, {}, function(err, convertResult) {
-      if (err) {
-        return console.log(err);
-      }
+    Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
+      expect(err).to.be.null;
       // Make sure that consumes and produces are processed
       convertResult.output.forEach(function(element) {
         expect(element.type).to.equal('collection');
@@ -136,16 +135,15 @@ describe('the converter', function () {
         expect(JSON.stringify(element.data.item[0].request.header[1])).to
         .equal('{"key":"Accept","value":"text/json"}');
       });
+      done();
     });
   });
 
-  it('should convert path paramters to postman-compatible paramters', function () {
+  it('should convert path paramters to postman-compatible paramters', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger2-with-params.json');
 
     Converter.convert({ type: 'file', data: samplePath }, {}, function(err, convertResult) {
-      if (err) {
-        return console.log(err);
-      }
+      expect(err).to.be.null;
       // Make sure that path params are updated and their respective default values
       convertResult.output.forEach(function(element) {
         expect(element.type).to.equal('collection');
@@ -154,6 +152,7 @@ describe('the converter', function () {
         expect(element.data.item[0].request.url.variable).to.deep.include({ type: 'any',
           value: '42', key: 'ownerId' });
       });
+      done();
     });
   });
 });
