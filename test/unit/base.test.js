@@ -150,7 +150,7 @@ describe('the converter', function () {
         expect(element.data.item[0].request.url.path.indexOf(':ownerId') > -1).to.equal(true);
         expect(element.data.item[0].request.url.path.indexOf(':petId') > -1).to.equal(true);
         expect(element.data.item[0].request.url.variable).to.deep.include({ type: 'any',
-          value: '42', key: 'ownerId' });
+          value: '42', key: 'ownerId', description: 'Owner Id' });
       });
       done();
     });

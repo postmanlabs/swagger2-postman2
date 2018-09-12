@@ -34,6 +34,7 @@ describe(packageJson.name, function() {
       result.output.forEach(function (element) {
         expect(element.type).to.be.within('collection', 'request', 'environment');
         if (element.type === 'collection') {
+          console.log(element.data.item[0]);
           expect(element.data).to.have.property('info');
           expect(element.data).to.have.property('item');
         }

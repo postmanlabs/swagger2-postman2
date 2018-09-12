@@ -66,7 +66,7 @@
           "/owner/{ownerId}": {
             "post": {
               "summary": "Find pets belonging to a owner",
-              "description": "",
+              "description": "description for post request",
               "operationId": "findPetsOfOwners",
               "parameters": [
                 {
