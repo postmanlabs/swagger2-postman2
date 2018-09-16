@@ -3,6 +3,7 @@ var path = '../../',
   package = require(path),
   packageJson = require(path + '/package.json');
 
+/* global describe, it */
 describe(packageJson.name, function() {
   var sampleInput = packageJson.com_postman_plugin.sample_input;
 
@@ -27,17 +28,20 @@ describe(packageJson.name, function() {
   });
 
   it('should convert the sample input correctly', function (done) {
-    package.convert(sampleInput, function(err, result) {
-      expect(err).to.be.null;
+    package.convert(sampleInput, {}, function(err, result) {
+      expect(err).to.be(null);
       expect(result.result).to.equal(true);
       result.output.forEach(function (element) {
-        expect(element.type).to.be.within('collection', 'request');
+        expect(element.type).to.be.within('collection', 'request', 'environment');
         if (element.type === 'collection') {
           expect(element.data).to.have.property('info');
           expect(element.data).to.have.property('item');
         }
-        else {
-          expect(result.data).to.have.property('url');
+        else if (element.type === 'request') {
+          expect(element.data).to.have.property('url');
+        }
+        else if (element.type === 'environment') {
+          expect(element.data).to.have.property('values');
         }
       });
 
