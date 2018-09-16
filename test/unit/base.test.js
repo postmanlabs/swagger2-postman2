@@ -69,6 +69,46 @@ describe('Helpers', function () {
 
     expect(basePath).to.equal('http://getpostman.com/api/');
   });
+
+  it('should generate the correct request names for PathItems', function(done) {
+    var swagger = {
+      host: 'getpostman.com',
+      basePath: '/api',
+      schemes: ['http'],
+      info: {
+        description: 'My API',
+        version: '1.0.0',
+        title: 'My API',
+        termsOfService: 'http://www.domain.com',
+        contact: {
+          name: 'support@domain.com'
+        }
+      },
+      paths: {
+        req1: {
+          post: {
+            operationId: 'req1'
+          }
+        },
+        req2: {
+          post: {
+          }
+        },
+        req3: {
+          post: {
+            summary: 'req3'
+          }
+        }
+      }
+    };
+
+    Converter.convert(swagger, (err, result) => {
+      expect(result.output[0].data.item[0].name).to.equal('req1'); // from operationId
+      expect(result.output[0].data.item[1].name).to.equal('http://getpostman.com/api/req2'); // from URL
+      expect(result.output[0].data.item[2].name).to.equal('req3'); // from summary
+      done();
+    });
+  });
 });
 
 describe('The converter must convert a swagger file', function() {
