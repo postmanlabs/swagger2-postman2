@@ -72,6 +72,7 @@ describe('Helpers', function () {
 
   it('should generate the correct request names for PathItems', function(done) {
     var swagger = {
+      swagger: '2.0',
       host: 'getpostman.com',
       basePath: '/api',
       schemes: ['http'],
@@ -102,7 +103,7 @@ describe('Helpers', function () {
       }
     };
 
-    Converter.convert(swagger, (err, result) => {
+    Converter.convert({ type: 'json', data: swagger }, {}, (err, result) => {
       expect(result.output[0].data.item[0].name).to.equal('req1'); // from operationId
       expect(result.output[0].data.item[1].name).to.equal('http://getpostman.com/api/req2'); // from URL
       expect(result.output[0].data.item[2].name).to.equal('req3'); // from summary
