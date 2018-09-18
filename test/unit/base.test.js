@@ -54,7 +54,7 @@ describe('Helpers', function () {
         basePath: '/api',
         schemes: ['https']
       },
-      basePath = Helpers.getBasePath(swagger);
+      basePath = Helpers.generateUrl(swagger);
 
     expect(basePath).to.equal('https://getpostman.com/api/');
   });
@@ -65,7 +65,7 @@ describe('Helpers', function () {
         basePath: '/api',
         schemes: ['http']
       },
-      basePath = Helpers.getBasePath(swagger);
+      basePath = Helpers.generateUrl(swagger);
 
     expect(basePath).to.equal('http://getpostman.com/api/');
   });
@@ -76,9 +76,9 @@ describe('The converter must convert a swagger file', function() {
 
     Converter.convert({ type: 'file', data: path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json') },
       {}, (err, result) => {
-        console.log(err);
+        expect(err).to.be.null;
         expect(result.result).to.equal(true);
-        expect(result.output.length).to.equal(1);
+        expect(result.output.length).to.equal(2);
         expect(result.output[0].type).to.have.equal('collection');
         expect(result.output[0].data).to.have.property('info');
         expect(result.output[0].data).to.have.property('item');
@@ -95,7 +95,7 @@ describe('The converter must convert a swagger object', function() {
 
     Converter.convert({ type: 'json', data: samplePath }, {}, (err, result) => {
       expect(result.result).to.equal(true);
-      expect(result.output.length).to.equal(1);
+      expect(result.output.length).to.equal(2);
       expect(result.output[0].type).to.have.equal('collection');
       expect(result.output[0].data).to.have.property('info');
       expect(result.output[0].data).to.have.property('item');
@@ -106,6 +106,19 @@ describe('The converter must convert a swagger object', function() {
 
 //added from converter-spec
 describe('the converter', function () {
+  it('must create environment with url variable', function (done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');
+
+    Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
+      expect(err).to.be.null;
+      expect(convertResult.output[1].type).to.equal('environment');
+      expect(convertResult.output[1].data.values).to.deep.include({ key: 'url',
+        value: 'https://execute-api.us-east-1.amazonaws.com/',
+        enabled: true,
+        type: 'text' });
+      done();
+    });
+  });
 
   it('must read values from the "x-postman-meta" key', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');
@@ -113,11 +126,11 @@ describe('the converter', function () {
     Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
       expect(err).to.be.null;
       // Make sure that currentHelper and helperAttributes are processed
-      convertResult.output.forEach(function(element) {
-        expect(element.type).to.equal('collection');
-        expect(element.data.item[0].request).to.have.key(['auth', 'body', 'header', 'method', 'name', 'url']);
-        expect(element.data.item[0].request.auth.type).to.equal('awsv4');
-      });
+      var element = convertResult.output[0];
+
+      expect(element.type).to.equal('collection');
+      expect(element.data.item[0].request).to.have.key(['auth', 'body', 'header', 'method', 'name', 'url']);
+      expect(element.data.item[0].request.auth.type).to.equal('awsv4');
       done();
     });
   });
@@ -128,13 +141,13 @@ describe('the converter', function () {
     Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
       expect(err).to.be.null;
       // Make sure that consumes and produces are processed
-      convertResult.output.forEach(function(element) {
-        expect(element.type).to.equal('collection');
-        expect(JSON.stringify(element.data.item[0].request.header[0])).to
+      var element = convertResult.output[0];
+
+      expect(element.type).to.equal('collection');
+      expect(JSON.stringify(element.data.item[0].request.header[0])).to
           .equal('{"key":"Content-Type","value":"application/json"}');
-        expect(JSON.stringify(element.data.item[0].request.header[1])).to
+      expect(JSON.stringify(element.data.item[0].request.header[1])).to
         .equal('{"key":"Accept","value":"text/json"}');
-      });
       done();
     });
   });
@@ -145,13 +158,13 @@ describe('the converter', function () {
     Converter.convert({ type: 'file', data: samplePath }, {}, function(err, convertResult) {
       expect(err).to.be.null;
       // Make sure that path params are updated and their respective default values
-      convertResult.output.forEach(function(element) {
-        expect(element.type).to.equal('collection');
-        expect(element.data.item[0].request.url.path.indexOf(':ownerId') > -1).to.equal(true);
-        expect(element.data.item[0].request.url.path.indexOf(':petId') > -1).to.equal(true);
-        expect(element.data.item[0].request.url.variable).to.deep.include({ type: 'any',
-          value: '42', key: 'ownerId' });
-      });
+      var element = convertResult.output[0];
+
+      expect(element.type).to.equal('collection');
+      expect(element.data.item[0].request.url.path.indexOf(':ownerId') > -1).to.equal(true);
+      expect(element.data.item[0].request.url.path.indexOf(':petId') > -1).to.equal(true);
+      expect(element.data.item[0].request.url.variable).to.deep.include({ type: 'any',
+          value: '{{ownerId}}', key: 'ownerId' });
       done();
     });
   });
