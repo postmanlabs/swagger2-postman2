@@ -41,7 +41,6 @@ describe(packageJson.name, function() {
           expect(element.data).to.have.property('url');
         }
         else if (element.type === 'environment') {
-          console.log(element.data);
           expect(element.data).to.have.property('values');
         }
       });

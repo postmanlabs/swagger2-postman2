@@ -106,6 +106,23 @@ describe('The converter must convert a swagger object', function() {
 
 //added from converter-spec
 describe('the converter', function () {
+  it('should create environment with path variables', function (done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');
+
+    Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
+      expect(err).to.be.null;
+      // Make sure that currentHelper and helperAttributes are processed
+      var element = convertResult.output[1];
+
+      expect(element.type).to.equal('environment');
+      expect(element.data.values).to.deep.include({ key: 'petId', value: '{{petId}}', enabled: true, type: 'text' });
+      expect(element.data.values).to.deep.include(
+        { key: 'orderId', value: '{{orderId}}', enabled: true, type: 'text' });
+      expect(element.data.values).to.deep.include(
+        { key: 'username', value: '{{username}}', enabled: true, type: 'text' });
+      done();
+    });
+  });
 
   it('must read values from the "x-postman-meta" key', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');
