@@ -119,6 +119,50 @@ describe('the converter', function () {
       done();
     });
   });
+  it('must create url.raw as expected', function (done) {
+    var sampleJson = {
+      'swagger': '2.0',
+      'info': {
+        'description': 'My API',
+        'version': '2',
+        'title': 'Awesome Pets API'
+      },
+      'basePath': '/',
+      'schemes': [
+        'http'
+      ],
+      'paths': {
+        '/owner/{ownerId}/pet/pets{petId}': {
+          'post': {
+            'operationId': 'findPetsOfOwners',
+            'parameters': [{
+              'in': 'path',
+              'name': 'ownerId',
+              'description': 'Owner Id',
+              'required': true,
+              'type': 'integer',
+              'default': '42'
+            }, {
+              'in': 'path',
+              'name': 'petId',
+              'description': 'Pet Id',
+              'required': true,
+              'type': 'integer'
+
+            }]
+          }
+        }
+      }
+    }
+    ;
+
+    Converter.convert({ type: 'json', data: sampleJson }, { requestName: 'url' }, function(err, convertResult) {
+      expect(err).to.be.null;
+      expect(convertResult.output[0].type).to.equal('collection');
+      expect(convertResult.output[0].data.item[0].name).to.equal('{{url}}/owner/:ownerId/pet/pets:petId');
+      done();
+    });
+  });
 
   it('must read values from the "x-postman-meta" key', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');
