@@ -106,6 +106,25 @@ describe('The converter must convert a swagger object', function() {
 
 //added from converter-spec
 describe('the converter', function () {
+  it('must add description in requestItem, path, header and query params', function(done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger2-with-params.json');
+
+    Converter.convert({ type: 'file', data: samplePath }, { requestName: 'url' }, function(err, convertResult) {
+      expect(err).to.be.null;
+      // Make sure that currentHelper and helperAttributes are processed
+      var element = convertResult.output[0];
+
+      expect(element.type).to.equal('collection');
+      expect(element.data.item[0].description).to.deep.include({ content: '', type: 'text/plain' });
+      expect(element.data.item[0].request.header).to.deep.include(
+        { key: 'header1', value: 'value1', description: 'header param description' });
+      expect(element.data.item[0].request.url.query).to.deep.include(
+        { key: 'param1', value: 'value1', description: 'query param description' });
+      expect(element.data.item[0].request.url.variable).to.deep.include(
+        { type: 'any', value: '42', key: 'ownerId', description: 'Owner Id' });
+      done();
+    });
+  });
 
   it('must read values from the "x-postman-meta" key', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger_aws.json');

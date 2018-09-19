@@ -33,6 +33,22 @@
           "required": true,
           "type": "integer"
 
+        },
+        {
+          "in": "query",
+          "name": "param1",
+          "description": "query param description",
+          "required": true,
+          "type": "string",
+          "default": "value1"
+        },
+        {
+          "in": "header",
+          "name": "header1",
+          "description": "header param description",
+          "required": true,
+          "type": "string",
+          "default": "value1"
         }],
         "responses": {
           "200": {
