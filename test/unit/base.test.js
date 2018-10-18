@@ -63,6 +63,21 @@ describe('Helpers', function () {
 
     expect(basePath).to.equal('http://getpostman.com/api/');
   });
+
+  it('convertSwaggerRequestToItem should use operationId when summary is not set', function() {
+    var swagger = {
+        host: 'getpostman.com',
+        basePath: '/',
+        schemes: ['http']
+      },
+      pathItem = {
+        path: 'http://host/api/foo/bar',
+        request:{summary:null, operationId:"Get a Foobar", produces:[], consumes:[]}
+      },
+      node = Helpers.convertSwaggerRequestToItem(swagger, pathItem);
+
+    expect(node.name).to.equal('Get a Foobar');
+  });
 });
 
 describe('The converter must convert a swagger file', function() {
