@@ -42,6 +42,28 @@ describe('The converter must identify invalid specs: ', function () {
 
 //Helpers
 describe('Helpers', function () {
+  it('getTreeFromPaths Routes should not be case sensitive', function() {
+    var json = {
+        paths:{
+          "/Foo/bar":{"get":{}},
+          "/FOO/baz":{"get":{}}
+        }
+      },
+      tree = Helpers.getTreeFromPaths(json);
+
+    var names = [];
+    for (var child in tree.children) {
+      if (tree.children.hasOwnProperty(child)) {
+        names.push(tree.children[child].name);
+        console.log(child);
+      }
+    }
+    expect(names.length).to.equal(1);
+    expect(names[0]).to.equal("Foo");
+    expect(tree.children["FOO"].children["BAR"].name).equals("bar");
+    expect(tree.children["FOO"].children["BAZ"].name).equals("baz");
+  });
+
   it('getBasePath should return the correct basePath', function() {
     var swagger = {
         host: 'getpostman.com',
