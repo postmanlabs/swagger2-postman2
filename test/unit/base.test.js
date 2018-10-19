@@ -145,20 +145,25 @@ describe('Compress - ', function () {
   });
 
   it('Empty folders are compressed', function () {
+
+    // swagger doc has an unnamed root that should not be used in the collapse.
     var tree = {
-      name: "root",
       item: [
         {
           name:"level1", 
           item:[
             {
               name:"level2",
-              item:[]}]}]
+              item:[
+                {
+                  name:"level3",
+                  item:[]}]}]}]
     },
     result = Converter.collapse(tree);
     
     expect(result.result).to.equal(true, result.reason);
-    expect(tree.item.length).to.equal(0);
-    expect(tree.name).to.equal("root/.../level2");
+    expect(tree.item.length).to.equal(1);
+    expect(tree.item[0].item.length).to.equal(0);
+    expect(tree.item[0].name).to.equal("level1/.../level3");
   });
 });
