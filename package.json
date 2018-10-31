@@ -1,6 +1,6 @@
 {
-  "name": "swagger2-postman2-converter",
-  "version": "0.0.3",
+  "name": "swagger2-postman2-parser",
+  "version": "1.0.1",
   "description": "BETA - A module to convert swagger 2.0 JSONs to Postman Collection Format v2",
   "main": "index.js",
   "scripts": {
