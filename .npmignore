@@ -1,9 +1,9 @@
 ### NPM Specific: Disregard recursive project files
 ### ===============================================
-/.jscsrc
 /.editorconfig
 /.gitmodules
-/.jshintrc
+/.coverage
+/.vscode
 /tests
 
 ### Borrowed from .gitignore
