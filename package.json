@@ -9,10 +9,9 @@
     "test-unit": "scripts/test-unit.sh"
   },
   "dependencies": {
-    "expect.js": "0.3.1",
     "js-yaml": "3.10.0",
     "json-schema-faker": "0.4.7",
-    "lodash": "4.17.5",
+    "lodash": "4.17.11",
     "node-uuid": "1.4.3",
     "postman-collection": "3.2.0"
   },
@@ -78,21 +77,21 @@
                   "default": "hello header"
                 },
                 {
-                "in": "path",
-                "name": "ownerId",
-                "description": "Owner Id",
-                "required": true,
-                "type": "integer",
-                "default": "42"
-              },
-              {
-                "in": "query",
-                "name": "petId1",
-                "description": "Pet Id1",
-                "required": true,
-                "type": "integer"
-      
-              }],
+                  "in": "path",
+                  "name": "ownerId",
+                  "description": "Owner Id",
+                  "required": true,
+                  "type": "integer",
+                  "default": "42"
+                },
+                {
+                  "in": "query",
+                  "name": "petId1",
+                  "description": "Pet Id1",
+                  "required": true,
+                  "type": "integer"
+                }
+              ],
               "responses": {
                 "200": {
                   "description": "Pet found successfully.",
@@ -104,7 +103,7 @@
             }
           }
         }
-      }      
+      }
     }
   }
 }
