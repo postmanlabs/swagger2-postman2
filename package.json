@@ -6,13 +6,16 @@
   "scripts": {
     "test": "scripts/test.sh",
     "test-lint": "scripts/test-lint.sh",
-    "test-unit": "scripts/test-unit.sh"
+    "test-unit": "scripts/test-unit.sh",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
-    "js-yaml": "3.10.0",
+    "js-yaml": "3.13.1",
     "lodash": "4.17.11",
     "openapi-to-postmanv2": "0.0.13",
-    "swagger2openapi": "^5.3.0"
+    "swagger2openapi": "^5.3.0",
+    "snyk": "^1.169.2"
   },
   "repository": {
     "type": "git",
@@ -31,10 +34,10 @@
   "homepage": "https://github.com/postmanlabs/swagger2-postman2",
   "devDependencies": {
     "chai": "4.1.2",
-    "eslint": "3.4.0",
+    "eslint": "4.18.2",
     "eslint-plugin-security": "1.4.0",
     "istanbul": "0.4.5",
-    "mocha": "3.0.2",
+    "mocha": "4.0.0",
     "nsp": "3.1.0"
   },
   "com_postman_plugin": {
@@ -103,5 +106,6 @@
         }
       }
     }
-  }
+  },
+  "snyk": true
 }
