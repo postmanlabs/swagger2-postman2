@@ -1,7 +1,8 @@
 language: node_js
-
 node_js:
-  - '8.9'
-
-script:
-  - npm test
+  - "6"
+  - "7"
+  - "8"
+  - "9"
+  - "node"
+  - "lts/*"
