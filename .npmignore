@@ -4,7 +4,10 @@
 /.gitmodules
 /.coverage
 /.vscode
-/tests
+/test
+standalone.js
+.travis.yml
+.eslintrc
 
 ### Borrowed from .gitignore
 ### ========================

@@ -1,4 +1,7 @@
 # swagger2-Postman
+
+[![Build Status](https://travis-ci.com/postmanlabs/swagger2-postman2.svg?branch=develop)](https://travis-ci.com/postmanlabs/swagger2-postman2)
+
 Converter for swagger 2.0 JSON to Postman Collection v2
 Exports the following functions:
 
