@@ -1,6 +1,6 @@
 {
   "name": "swagger2-to-postmanv2",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "A module to convert swagger 2.0 specs to Postman Collection Format v2",
   "main": "index.js",
   "scripts": {
@@ -9,99 +9,14 @@
     "test-unit": "scripts/test-unit.sh"
   },
   "dependencies": {
-    "js-yaml": "3.13.1",
+    "js-yaml": "3.10.0",
+    "json-schema-faker": "git+https://github.com/purecloudlabs/json-schema-faker",
     "lodash": "4.17.11",
-    "openapi-to-postmanv2": "0.0.15",
-    "swagger2openapi": "5.3.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/postmanlabs/swagger2-postman2.git"
-  },
-  "keywords": [
-    "swagger",
-    "postman",
-    "newman"
-  ],
-  "author": "Postman Labs <help@getpostman.com>",
-  "license": "Apache 2.0",
-  "bugs": {
-    "url": "https://github.com/postmanlabs/swagger2-postman2/issues"
-  },
-  "homepage": "https://github.com/postmanlabs/swagger2-postman2",
-  "devDependencies": {
-    "chai": "4.2.0",
-    "eslint": "5.16.0",
-    "eslint-plugin-security": "1.4.0",
-    "istanbul": "0.4.5",
-    "mocha": "6.1.4",
-    "nsp": "3.2.1"
-  },
-  "com_postman_plugin": {
-    "plugin_type": "importer",
-    "name": "Swagger 2.0 to Postman",
-    "source_format": "SWAGGER2.0",
-    "source_format_name": "Swagger 2.0",
-    "sample_input": {
-      "type": "json",
-      "data": {
-        "swagger": "2.0",
-        "info": {
-          "description": "My API",
-          "version": "1.0.0",
-          "title": "Awesome Pets API",
-          "termsOfService": "http://www.domain.com",
-          "contact": {
-            "name": "support@domain.com"
-          }
-        },
-        "basePath": "/",
-        "schemes": [
-          "http"
-        ],
-        "paths": {
-          "/owner/{ownerId}": {
-            "post": {
-              "summary": "Find pets belonging to a owner",
-              "description": "",
-              "operationId": "findPetsOfOwners",
-              "parameters": [
-                {
-                  "in": "header",
-                  "name": "header1",
-                  "description": "Owner header Id",
-                  "required": true,
-                  "type": "integer",
-                  "default": "hello header"
-                },
-                {
-                  "in": "path",
-                  "name": "ownerId",
-                  "description": "Owner Id",
-                  "required": true,
-                  "type": "integer",
-                  "default": "42"
-                },
-                {
-                  "in": "query",
-                  "name": "petId1",
-                  "description": "Pet Id1",
-                  "required": true,
-                  "type": "integer"
-                }
-              ],
-              "responses": {
-                "200": {
-                  "description": "Pet found successfully.",
-                  "schema": {
-                    "$ref": "#/definitions/Pet"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    "node-uuid": "1.4.3",
+    "postman-collection": "3.2.0",
+    "yargs": "^12.0.2",
+    "fast-safe-stringify": "^2.0.6",
+    "url": "^0.11.0"
   }
+  
 }
