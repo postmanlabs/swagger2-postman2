@@ -11,7 +11,7 @@
   "dependencies": {
     "js-yaml": "3.13.1",
     "lodash": "4.17.11",
-    "openapi-to-postmanv2": "0.0.15",
+    "openapi-to-postmanv2": "git+https://fc68754cf337f4a8fef75e0cd5f7687367b2dac7:x-oauth-basic@github.com/pitpit/openapi-to-postman.git#04465c61381ded99c84cafe4d478c43f61d49e5a",
     "swagger2openapi": "5.3.0"
   },
   "repository": {

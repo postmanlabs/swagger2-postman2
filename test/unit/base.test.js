@@ -129,6 +129,23 @@ describe('The converter must convert a swagger object', function() {
   });
 });
 
+describe('The converter must convert a swagger object which only have root path.', function() {
+  it('swagger3.json', function(done) {
+    var samplePath = JSON.parse(
+      fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'swagger3.json'), 'utf8')
+    );
+
+    Converter.convert({ type: 'json', data: samplePath }, {}, (err, result) => {
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].data).to.have.property('info');
+      expect(result.output[0].data).to.have.property('item');
+    });
+    done();
+  });
+});
+
 describe('The converter must convert a swagger string', function() {
   it('Sampleswagger.json', function(done) {
     var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
