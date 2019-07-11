@@ -183,7 +183,7 @@ describe('the converter', function () {
     });
   });
 
-  it('The converter must convert a swagger object which only have root path.', function(done) {
+  it('should convert a swagger object which only have a root path.', function(done) {
     var samplePath = JSON.parse(
       fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'swagger3.json'), 'utf8')
     );
