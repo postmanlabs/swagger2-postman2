@@ -1,0 +1,3210 @@
+{
+    "swagger" : "2.0",
+    "host": "api.bol.com",
+    "schemes": ["https"], 
+    "info" : {
+      "description" : "The bol.com API for Retailers.",
+      "version" : "3.0",
+      "title" : "v3"
+    },
+    "tags" : [ {
+      "name" : "Commission"
+    }, {
+      "name" : "Inbounds"
+    }, {
+      "name" : "Inventory"
+    }, {
+      "name" : "Invoices"
+    }, {
+      "name" : "Offers"
+    }, {
+      "name" : "Orders"
+    }, {
+      "name" : "Process Status"
+    }, {
+      "name" : "Reductions"
+    }, {
+      "name" : "Returns"
+    }, {
+      "name" : "Shipments"
+    }, {
+      "name" : "Shipping Labels"
+    }, {
+      "name" : "Transports"
+    } ],
+    "paths" : {
+      "/retailer/commission" : {
+        "post" : {
+          "tags" : [ "Commission" ],
+          "summary" : "Get all commissions and reductions by EAN in bulk",
+          "description" : "Gets all commissions and possible reductions by EAN, condition and optionally price. No more than 100 EAN`s can be sent in a single request.",
+          "operationId" : "get-commissions",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/commissionRequest"
+            }
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/commissionResponse"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/commission/{ean}" : {
+        "get" : {
+          "tags" : [ "Commission" ],
+          "summary" : "Get all commissions and reductions by EAN per single EAN",
+          "description" : "Commissions can be filtered by condition, which defaults to NEW. If price is provided, the exact commission amount will also be calculated.",
+          "operationId" : "get-commission",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "ean",
+            "in" : "path",
+            "description" : "The EAN number associated with this product.",
+            "required" : true,
+            "type" : "string",
+            "x-example" : "0000007740404"
+          }, {
+            "name" : "condition",
+            "in" : "query",
+            "description" : "The condition of the offer.",
+            "required" : false,
+            "type" : "string",
+            "default" : "NEW",
+            "enum" : [ "NEW", "AS_NEW", "GOOD", "REASONABLE", "MODERATE" ]
+          }, {
+            "name" : "price",
+            "in" : "query",
+            "description" : "The price of the product with a period as a decimal separator. The price should always have two decimals precision.",
+            "required" : false,
+            "type" : "number",
+            "x-example" : 10.99
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/Commission"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds" : {
+        "get" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get inbound shipment list",
+          "description" : "A paginated list of all inbound shipments.",
+          "operationId" : "get-inbounds",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "reference",
+            "in" : "query",
+            "description" : "A user defined reference to identify the inbound shipment.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "SHIPMENT1"
+          }, {
+            "name" : "bsku",
+            "in" : "query",
+            "description" : "The BSKU number associated with this product.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "2950002126612"
+          }, {
+            "name" : "creation-start",
+            "in" : "query",
+            "description" : "The creation start date and time to find the inbound shipment in ISO 8601 format.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "2018-01-01"
+          }, {
+            "name" : "creation-end",
+            "in" : "query",
+            "description" : "The creation end date and time to find the inbound shipment in ISO 8601 format.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "2018-01-01"
+          }, {
+            "name" : "state",
+            "in" : "query",
+            "description" : "The current state of the inbound shipment.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "Draft",
+            "enum" : [ "Draft", "PreAnnounced", "ArrivedAtWH", "Cancelled" ]
+          }, {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The requested page number with a pagesize of 50",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "minimum" : 1,
+            "format" : "int32",
+            "x-example" : 1
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/Inbounds"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        },
+        "post" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Post inbound shipment",
+          "description" : "Create a new inbound shipment.",
+          "operationId" : "post-inbound",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/InboundRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds/delivery-windows" : {
+        "get" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get delivery windows for new inbound shipments",
+          "description" : "Retrieve a list of available delivery windows when creating a new inbound shipment.",
+          "operationId" : "get-delivery-windows",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "delivery-date",
+            "in" : "query",
+            "description" : "The expected delivery date and time for the inbound in ISO 8601 format.",
+            "required" : false,
+            "type" : "string",
+            "default" : "Today's date.",
+            "x-example" : "2018-01-01"
+          }, {
+            "name" : "items-to-send",
+            "in" : "query",
+            "description" : "The number of items that will be sent in the inbound.",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "format" : "int32",
+            "x-example" : 1
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/Delivery windows for inbound shipments."
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds/fbb-transporters" : {
+        "get" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get FBB transporters list",
+          "description" : "Get all transporters that carry out FBB shipments.",
+          "operationId" : "get-fbb-transporters",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/TransportersResponse"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds/productlabels" : {
+        "post" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get FBB productlabels by EAN",
+          "description" : "Get FBB productlabels by EAN.",
+          "operationId" : "get-product-labels",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+pdf" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "description" : "The product labels to retrieve.",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/productLabelsRequest"
+            }
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds/{inbound-id}" : {
+        "get" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get inbound by inbound id",
+          "description" : "Get inbound details by inbound id.",
+          "operationId" : "get-inbound",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "inbound-id",
+            "in" : "path",
+            "description" : "A unique identifier for an inbound shipment.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64",
+            "x-example" : 12345678
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/Inbound"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds/{inbound-id}/packinglist" : {
+        "get" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get packing list by inbound id",
+          "description" : "Get packing list by inbound id.",
+          "operationId" : "get packing list",
+          "produces" : [ "application/vnd.retailer.v3+pdf" ],
+          "parameters" : [ {
+            "name" : "inbound-id",
+            "in" : "path",
+            "description" : "A unique identifier for an inbound shipment.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64",
+            "x-example" : 12345678
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inbounds/{inbound-id}/shippinglabel" : {
+        "get" : {
+          "tags" : [ "Inbounds" ],
+          "summary" : "Get FBB shippinglabel by inbound id",
+          "description" : "Get FBB shippinglabel by inbound id.",
+          "operationId" : "get-inbound-shipping-label",
+          "produces" : [ "application/vnd.retailer.v3+pdf" ],
+          "parameters" : [ {
+            "name" : "inbound-id",
+            "in" : "path",
+            "description" : "A unique identifier for an inbound shipment.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64",
+            "x-example" : 12345678
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/inventory" : {
+        "get" : {
+          "tags" : [ "Inventory" ],
+          "summary" : "Get LVB/FBB inventory",
+          "description" : "The inventory endpoint is a specific LVB/FBB endpoint. It provides a paginated list containing your fulfilment by bol.com inventory. This endpoint does not provide information about your own stock.",
+          "operationId" : "get-inventory",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The requested page number with a pagesize of 50",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "minimum" : 1,
+            "format" : "int32",
+            "x-example" : 1
+          }, {
+            "name" : "quantity",
+            "in" : "query",
+            "description" : "Filter inventory by providing a range of quantity (min-range)-(max-range).",
+            "required" : false,
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "collectionFormat" : "multi",
+            "x-example" : "0-10,20-30"
+          }, {
+            "name" : "stock",
+            "in" : "query",
+            "description" : "Filter inventory by stock level.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "sufficient",
+            "enum" : [ "sufficient", "insufficient" ]
+          }, {
+            "name" : "state",
+            "in" : "query",
+            "description" : "Filter inventory by stock type (saleable or unsaleable).",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "saleable",
+            "enum" : [ "saleable", "unsaleable" ]
+          }, {
+            "name" : "query",
+            "in" : "query",
+            "description" : "Filter inventory by EAN or product title.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "0000007740404"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/InventoryResponse"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/invoices" : {
+        "get" : {
+          "tags" : [ "Invoices" ],
+          "summary" : "Get all invoices",
+          "description" : "Gets a list of invoices, by default from the past 4 weeks. The optional period-start and period-end parameters can be used together to retrieve invoices from a specific date range in the past, the period can be no longer than 31 days. Invoices and their specifications can be downloaded separately in different media formats with the ‘GET an invoice by id’ and the ‘GET an invoice specification by id’ calls. The available media types differ per invoice and are listed per invoice within the response. Note: the media types listed in the response must be given in our standard API format.",
+          "operationId" : "get-invoices",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "period-start",
+            "in" : "query",
+            "description" : "Period start date in ISO 8601 standard.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "2019-03-01"
+          }, {
+            "name" : "period-end",
+            "in" : "query",
+            "description" : "Period end date in ISO 8601 standard.",
+            "required" : false,
+            "type" : "string",
+            "x-example" : "2019-03-31"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/invoices/{invoice-id}" : {
+        "get" : {
+          "tags" : [ "Invoices" ],
+          "summary" : "Get an invoice by invoice id",
+          "description" : "Gets an invoice by invoice id. The available media types differ per invoice and are listed within the response from the ‘GET all invoices’ call. Note: the media types listed in the response must be given in our standard API format.",
+          "operationId" : "get-invoice",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml", "application/vnd.retailer.v3+pdf" ],
+          "parameters" : [ {
+            "name" : "invoice-id",
+            "in" : "path",
+            "description" : "The id of the invoice",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/invoices/{invoice-id}/specification" : {
+        "get" : {
+          "tags" : [ "Invoices" ],
+          "summary" : "Get an invoice specification by invoice id",
+          "description" : "Gets an invoice specification for an invoice with a paginated list of its transactions. The available media types differ per invoice specification and are listed within the response from the ‘GET all invoices’ call. Note, the media types listed in the response must be given in our standard API format.",
+          "operationId" : "get-invoice-specification",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml", "application/vnd.retailer.v3+pdf", "application/vnd.retailer.v3+openxmlformats-officedocument.spreadsheetml.sheet" ],
+          "parameters" : [ {
+            "name" : "invoice-id",
+            "in" : "path",
+            "description" : "The id of the invoice.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          }, {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The page to get with a page size of 50.",
+            "required" : false,
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int32"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/offers" : {
+        "post" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Create a new offer",
+          "description" : "Creates a new offer, and adds it to the catalog. After creation, status information can be retrieved to review if the offer is valid and published to the shop.",
+          "operationId" : "post-offer",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/CreateOfferRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/offers/export" : {
+        "post" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Request an offer export file",
+          "description" : "Request an offer export file containing all offers.",
+          "operationId" : "post-offer-export",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/CreateOfferExportRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/offers/export/{offer-export-id}" : {
+        "get" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Retrieve an offer export file by offer export id",
+          "description" : "Retrieve an offer export file containing all offers.",
+          "operationId" : "get-offer-export",
+          "produces" : [ "application/vnd.retailer.v3+csv" ],
+          "parameters" : [ {
+            "name" : "offer-export-id",
+            "in" : "path",
+            "description" : "Unique identifier for an offer export.",
+            "required" : true,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request."
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/offers/{offer-id}" : {
+        "get" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Retrieve an offer by its offer id",
+          "description" : "Retrieve an offer by using the offer id provided to you when creating or listing your offers.",
+          "operationId" : "get-offer",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "offer-id",
+            "in" : "path",
+            "description" : "Unique identifier for an offer.",
+            "required" : true,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/RetailerOffer"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Update an offer",
+          "description" : "Use this endpoint to send an offer update. This endpoint returns a process status.",
+          "operationId" : "put-offer",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "offer-id",
+            "in" : "path",
+            "description" : "Unique identifier for an offer.",
+            "required" : true,
+            "type" : "string"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/UpdateOfferRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        },
+        "delete" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Delete offer by id",
+          "description" : "Delete an offer by id.",
+          "operationId" : "delete-offer",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "offer-id",
+            "in" : "path",
+            "description" : "Unique identifier for an offer.",
+            "required" : true,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/offers/{offer-id}/price" : {
+        "put" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Update price for offer by id",
+          "description" : "Update price for offer by id. The flow is designed to facilitate the planned offering of bundle discounts. This is not yet available. Therefore, the ‘quantity’ field should always contain the value ‘1’, and the price should represent the single unit price.",
+          "operationId" : "update-offer-price",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "offer-id",
+            "in" : "path",
+            "description" : "Unique identifier for an offer.",
+            "required" : true,
+            "type" : "string"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/UpdateOfferPriceRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/offers/{offer-id}/stock" : {
+        "put" : {
+          "tags" : [ "Offers" ],
+          "summary" : "Update stock for offer by id",
+          "description" : "Update stock for offer by id.",
+          "operationId" : "update-offer-stock",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "offer-id",
+            "in" : "path",
+            "description" : "Unique identifier for an offer.",
+            "required" : true,
+            "type" : "string"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/UpdateOfferStockRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/orders" : {
+        "get" : {
+          "tags" : [ "Orders" ],
+          "summary" : "Get open orders",
+          "description" : "Gets a paginated list of all open orders sorted by date in descending order.",
+          "operationId" : "get-orders",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The requested page number with a pagesize of 50",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "minimum" : 1,
+            "format" : "int32"
+          }, {
+            "name" : "fulfilment-method",
+            "in" : "query",
+            "description" : "The fulfilment method. Fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB).",
+            "required" : false,
+            "type" : "string",
+            "default" : "FBR",
+            "enum" : [ "FBR", "FBB" ]
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/ReducedOrders"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/orders/{order-id}" : {
+        "get" : {
+          "tags" : [ "Orders" ],
+          "summary" : "Get an order by order id",
+          "description" : "Gets an order by order id.",
+          "operationId" : "get-order",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "order-id",
+            "in" : "path",
+            "description" : "The id of the order to get.",
+            "required" : true,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/Order"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/orders/{order-item-id}/cancellation" : {
+        "put" : {
+          "tags" : [ "Orders" ],
+          "summary" : "Cancel an order item by order item id",
+          "description" : "This endpoint can be used to either confirm a cancellation request by the customer or to cancel an order you yourself are unable to fulfil.",
+          "operationId" : "cancel-order",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "order-item-id",
+            "in" : "path",
+            "description" : "The id of the order item to cancel.",
+            "required" : true,
+            "type" : "string"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/Cancellation"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/orders/{order-item-id}/shipment" : {
+        "put" : {
+          "tags" : [ "Orders" ],
+          "summary" : "Ship order item",
+          "description" : "Ship a single order item within a customer order by providing shipping information. In case you purchased a shipping label you can add the shippingLabelCode to this message. In that case the transport element must be left empty. If you ship the item(s) using your own transporter method you must omit the shippingLabelCode entirely.",
+          "operationId" : "ship-order-item",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "order-item-id",
+            "in" : "path",
+            "description" : "The order item being confirmed.",
+            "required" : true,
+            "type" : "string",
+            "x-example" : "1234567891"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/ShipmentRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/process-status" : {
+        "get" : {
+          "tags" : [ "Process Status" ],
+          "summary" : "Gets the status of an asynchronous process by entity id and event type for a retailer",
+          "description" : "Retrieve a list of process statuses, which shows information regarding previously executed PUT/POST requests in descending order. You need to supply an entity id and event type.",
+          "operationId" : "get-process-status",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "entity-id",
+            "in" : "query",
+            "description" : "The entity id is not unique so you need to provide an event type. The entity id can either be order item id, transport id, return number or inbound reference.",
+            "required" : true,
+            "type" : "string",
+            "x-example" : "987654321"
+          }, {
+            "name" : "event-type",
+            "in" : "query",
+            "description" : "The event type can only be used in combination with the entity id.",
+            "required" : true,
+            "type" : "string",
+            "x-example" : "PROCESS_EXAMPLE",
+            "enum" : [ "CONFIRM_SHIPMENT", "CANCEL_ORDER", "CHANGE_TRANSPORT", "HANDLE_RETURN_ITEM", "CREATE_INBOUND", "DELETE_OFFER", "CREATE_OFFER", "UPDATE_OFFER", "UPDATE_OFFER_STOCK", "UPDATE_OFFER_PRICE" ]
+          }, {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The requested page number with a pagesize of 50",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "minimum" : 1,
+            "format" : "int32"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatusResponse"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/process-status/{process-status-id}" : {
+        "get" : {
+          "tags" : [ "Process Status" ],
+          "summary" : "Get the status of an asynchronous process by id",
+          "description" : "Retrieve a specific process-status, which shows information regarding a previously executed PUT/POST request. All PUT/POST requests on the other endpoints will supply a process-status-id in the related response. You can use this id to retrieve a status by using the endpoint below.",
+          "operationId" : "get-process-status",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "process-status-id",
+            "in" : "path",
+            "description" : "The id of the process status being requested. This id is supplied in every response to a PUT/POST request on the other endpoints.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/purchasable-shippinglabels/{order-item-id}" : {
+        "get" : {
+          "tags" : [ "Shipping Labels" ],
+          "summary" : "Get purchasable shipping labels by order item id",
+          "description" : "Retrieves all available shipping labels based on the supplied order item.",
+          "operationId" : "get-shipping-labels",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "order-item-id",
+            "in" : "path",
+            "description" : "The order item id of the order to get purchasable shipping labels from.",
+            "required" : true,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/PurchasableShippingLabelsResponse"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/reductions" : {
+        "get" : {
+          "tags" : [ "Reductions" ],
+          "summary" : "Get reductions list",
+          "description" : "This endpoint will return a list EAN’s that are eligible for reductions on the commission fee.",
+          "operationId" : "get-reductions",
+          "produces" : [ "application/vnd.retailer.v3+csv" ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request."
+            }
+          }
+        }
+      },
+      "/retailer/reductions/latest" : {
+        "get" : {
+          "tags" : [ "Reductions" ],
+          "summary" : "Get latest reductions filename",
+          "description" : "This endpoint below will return a filename of the latest reductions list. The response from this endpoint can be compared to the response header that was given back from the Get Reductions List endpoint",
+          "operationId" : "get-latest-reductions-filename",
+          "produces" : [ "application/vnd.retailer.v3+csv" ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/returns" : {
+        "get" : {
+          "tags" : [ "Returns" ],
+          "summary" : "Get returns",
+          "description" : "Get a paginated list of all returns, which are sorted by date in descending order.",
+          "operationId" : "get-returns",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The requested page number with a pagesize of 50",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "minimum" : 1,
+            "format" : "int32"
+          }, {
+            "name" : "handled",
+            "in" : "query",
+            "description" : "The status of the returns you wish to see, shows either handled or unhandled returns.",
+            "required" : false,
+            "type" : "boolean",
+            "default" : false
+          }, {
+            "name" : "fulfilment-method",
+            "in" : "query",
+            "description" : "The fulfilment method. Fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB).",
+            "required" : false,
+            "type" : "string",
+            "default" : "FBR",
+            "enum" : [ "FBR", "FBB" ]
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/ReturnsResponse"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/returns/{rma-id}" : {
+        "get" : {
+          "tags" : [ "Returns" ],
+          "summary" : "Get a return by rma id",
+          "description" : "Retrieve a return based on the rma id.",
+          "operationId" : "get-return",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "rma-id",
+            "in" : "path",
+            "description" : "The RMA (Return Merchandise Authorization) id that identifies this particular return.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/ReturnItem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        },
+        "put" : {
+          "tags" : [ "Returns" ],
+          "summary" : "Handle a return",
+          "description" : "Allows the user to handle a return. This can be to either handle an open return, or change the handlingResult of an already handled return. The latter is only possible in limited scenarios, please check the returns documentation for a complete list.",
+          "operationId" : "handle-return",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "rma-id",
+            "in" : "path",
+            "description" : "The RMA (Return Merchandise Authorization) id that identifies this particular return.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "description" : "The handling result requested by the user.",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/ReturnRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/shipments" : {
+        "get" : {
+          "tags" : [ "Shipments" ],
+          "summary" : "Get shipment list",
+          "description" : "A paginated list to retrieve all your shipments. The shipments will be sorted by date in descending order.",
+          "operationId" : "get-shipments",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "page",
+            "in" : "query",
+            "description" : "The page to get with a page size of 50.",
+            "required" : false,
+            "type" : "integer",
+            "default" : 1,
+            "format" : "int32"
+          }, {
+            "name" : "fulfilment-method",
+            "in" : "query",
+            "description" : "The fulfilment method. Fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB).",
+            "required" : false,
+            "type" : "string",
+            "default" : "FBR",
+            "enum" : [ "FBR", "FBB" ]
+          }, {
+            "name" : "order-id",
+            "in" : "query",
+            "description" : "The id of the order. Only valid without fulfilment-method. The default fulfilment-method is ignored.",
+            "required" : false,
+            "type" : "string"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/ShipmentResponse"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/shipments/{shipment-id}" : {
+        "get" : {
+          "tags" : [ "Shipments" ],
+          "summary" : "Get a shipment by shipment id",
+          "description" : "Retrieve a single shipment by its corresponding id.",
+          "operationId" : "get-shipment",
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "shipment-id",
+            "in" : "path",
+            "description" : "The id of the shipment.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "$ref" : "#/definitions/Shipment"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/transports/{transport-id}" : {
+        "put" : {
+          "tags" : [ "Transports" ],
+          "summary" : "Add transport information by transport id",
+          "description" : "Add information to an existing transport. The transport id is part of the shipment. You can retrieve the transport id through the GET shipment list request.",
+          "operationId" : "add-transport-information-by-transport-id",
+          "consumes" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "produces" : [ "application/vnd.retailer.v3+json", "application/vnd.retailer.v3+xml" ],
+          "parameters" : [ {
+            "name" : "transport-id",
+            "in" : "path",
+            "description" : "The transport id.",
+            "required" : true,
+            "type" : "integer",
+            "format" : "int64"
+          }, {
+            "in" : "body",
+            "name" : "body",
+            "description" : "The change transport requested by the user.",
+            "required" : false,
+            "schema" : {
+              "$ref" : "#/definitions/ChangeTransportRequest"
+            }
+          } ],
+          "responses" : {
+            "202" : {
+              "description" : "Accepted: Successfully scheduled the request for processing.",
+              "schema" : {
+                "$ref" : "#/definitions/ProcessStatus"
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      },
+      "/retailer/transports/{transport-id}/shipping-label" : {
+        "get" : {
+          "tags" : [ "Transports" ],
+          "summary" : "Get shipping label by transport id",
+          "operationId" : "getShippingLabel",
+          "produces" : [ "application/vnd.retailer.v3+pdf" ],
+          "parameters" : [ {
+            "name" : "transport-id",
+            "in" : "path",
+            "description" : "The transport id.",
+            "required" : true,
+            "type" : "integer",
+            "minimum" : 1,
+            "format" : "int64"
+          } ],
+          "responses" : {
+            "200" : {
+              "description" : "Ok: Successfully processed the request.",
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "format" : "byte"
+                }
+              }
+            },
+            "400" : {
+              "description" : "Bad request: The sent request does not meet the API specification. Please check the error message(s) for more information.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            },
+            "404" : {
+              "description" : "Not found: The requested item could not be found.",
+              "schema" : {
+                "$ref" : "#/definitions/Problem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions" : {
+      "AddressDetails" : {
+        "type" : "object",
+        "properties" : {
+          "salutationCode" : {
+            "type" : "string",
+            "example" : "02",
+            "description" : "The salutation code."
+          },
+          "firstName" : {
+            "type" : "string",
+            "example" : "Billie",
+            "description" : "The first name."
+          },
+          "surName" : {
+            "type" : "string",
+            "example" : "Jansen",
+            "description" : "The surname."
+          },
+          "streetName" : {
+            "type" : "string",
+            "example" : "Dorpstraat",
+            "description" : "The street name."
+          },
+          "houseNumber" : {
+            "type" : "string",
+            "example" : "1",
+            "description" : "The house number."
+          },
+          "houseNumberExtended" : {
+            "type" : "string",
+            "example" : "B",
+            "description" : "The extension on the house number."
+          },
+          "addressSupplement" : {
+            "type" : "string",
+            "example" : "Lorem Ipsum",
+            "description" : "The address supplement."
+          },
+          "extraAddressInformation" : {
+            "type" : "string",
+            "example" : "Apartment",
+            "description" : "Extra information about the address."
+          },
+          "zipCode" : {
+            "type" : "string",
+            "example" : "1111 ZZ",
+            "description" : "The ZIP code."
+          },
+          "city" : {
+            "type" : "string",
+            "example" : "Utrecht",
+            "description" : "The name of the city."
+          },
+          "countryCode" : {
+            "type" : "string",
+            "example" : "NL",
+            "description" : "The country code."
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "billie@verkopen.bol.com",
+            "description" : "The e-mail address."
+          },
+          "company" : {
+            "type" : "string",
+            "example" : "bol.com",
+            "description" : "The company name."
+          },
+          "vatNumber" : {
+            "type" : "string",
+            "example" : "NL999999999B99",
+            "description" : "The VAT number."
+          },
+          "deliveryPhoneNumber" : {
+            "type" : "string",
+            "example" : "012123456",
+            "description" : "The delivery phone number."
+          }
+        },
+        "description" : "The address details of the order"
+      },
+      "BundlePrice" : {
+        "type" : "object",
+        "required" : [ "price", "quantity" ],
+        "properties" : {
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1,
+            "description" : "The minimum quantity a customer must order in order to receive discount. The element with value 1 must at least be present. In case of using more elements, the respective quantities must be in increasing order.",
+            "minimum" : 1,
+            "maximum" : 24
+          },
+          "price" : {
+            "type" : "number",
+            "example" : 9.99,
+            "description" : "The price per single unit in case the customer orders at least the quantity provided. When using more than 1 price, the respective prices must be in decreasing order using 2 decimal precision and dot separated.",
+            "minimum" : 1,
+            "maximum" : 9999
+          }
+        }
+      },
+      "Cancellation" : {
+        "type" : "object",
+        "properties" : {
+          "reasonCode" : {
+            "type" : "string",
+            "example" : "BAD_CONDITION",
+            "description" : "The code representing the reason for cancellation of this item.",
+            "enum" : [ "OUT_OF_STOCK", "REQUESTED_BY_CUSTOMER", "BAD_CONDITION", "HIGHER_SHIPCOST", "INCORRECT_PRICE", "NOT_AVAIL_IN_TIME", "NO_BOL_GUARANTEE", "ORDERED_TWICE", "RETAIN_ITEM", "TECH_ISSUE", "UNFINDABLE_ITEM", "OTHER" ]
+          }
+        }
+      },
+      "ChangeTransportRequest" : {
+        "type" : "object",
+        "properties" : {
+          "transporterCode" : {
+            "type" : "string",
+            "example" : "TNT",
+            "enum" : [ "BRIEFPOST", "UPS", "TNT", "TNT-EXTRA", "TNT_BRIEF", "TNT-EXPRESS", "DYL", "DPD-NL", "DPD-BE", "BPOST_BE", "BPOST_BRIEF", "DHLFORYOU", "GLS", "FEDEX_NL", "FEDEX_BE", "OTHER", "DHL", "DHL_DE", "DHL-GLOBAL-MAIL", "TSN", "FIEGE", "TRANSMISSION", "PARCEL-NL", "LOGOIX", "PACKS", "COURIER", "RJP" ]
+          },
+          "trackAndTrace" : {
+            "type" : "string",
+            "example" : "3SBOL0987654321",
+            "description" : "The track and trace code that is associated with this transport."
+          }
+        }
+      },
+      "Commission" : {
+        "type" : "object",
+        "required" : [ "reductions" ],
+        "properties" : {
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "condition" : {
+            "type" : "string",
+            "example" : "NEW",
+            "description" : "The condition of the offer."
+          },
+          "price" : {
+            "type" : "number",
+            "example" : 10.99,
+            "description" : "The price of the product with a period as a decimal separator. The price should always have two decimals precision."
+          },
+          "fixedAmount" : {
+            "type" : "number",
+            "example" : 0.99,
+            "description" : "Fixed fee."
+          },
+          "percentage" : {
+            "type" : "number",
+            "example" : 15.0,
+            "description" : "A percentage of the offer price. The percentage can vary per product category."
+          },
+          "totalCost" : {
+            "type" : "number",
+            "example" : 1.99,
+            "description" : "Total applicable fee calculated based on the offer price provided."
+          },
+          "totalCostWithoutReduction" : {
+            "type" : "number",
+            "example" : 3.99,
+            "description" : "Total applicable fee calculated based on the offer price if you do not meet the maximum price criteria."
+          },
+          "reductions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Reduction"
+            }
+          }
+        }
+      },
+      "CommissionQuery" : {
+        "type" : "object",
+        "required" : [ "ean" ],
+        "properties" : {
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "condition" : {
+            "type" : "string",
+            "example" : "NEW",
+            "description" : "The condition of the offer.",
+            "enum" : [ "NEW", "AS_NEW", "GOOD", "REASONABLE", "MODERATE" ]
+          },
+          "price" : {
+            "type" : "number",
+            "example" : 10.99,
+            "description" : "The price of the product with a period as a decimal separator. The price should always have two decimals precision.",
+            "minimum" : 0,
+            "maximum" : 9999
+          }
+        }
+      },
+      "Condition" : {
+        "type" : "object",
+        "required" : [ "name" ],
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "AS_NEW",
+            "description" : "The condition of the offered product.",
+            "enum" : [ "NEW", "AS_NEW", "GOOD", "REASONABLE", "MODERATE" ]
+          },
+          "category" : {
+            "type" : "string",
+            "example" : "SECONDHAND",
+            "description" : "The category of the condition. If not given NEW or SECONDHAND is derived from NAME.",
+            "enum" : [ "NEW", "SECONDHAND" ]
+          },
+          "comment" : {
+            "type" : "string",
+            "example" : "Heeft een koffie vlek op de kaft.",
+            "description" : "The description of the condition of the product. Only allowed if name is not NEW and may not contain e-mail addresses.",
+            "minLength" : 0,
+            "maxLength" : 2000
+          }
+        }
+      },
+      "CountryCode" : {
+        "type" : "object",
+        "required" : [ "countryCode" ],
+        "properties" : {
+          "countryCode" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CreateOfferExportRequest" : {
+        "type" : "object",
+        "required" : [ "format" ],
+        "properties" : {
+          "format" : {
+            "type" : "string",
+            "example" : "CSV",
+            "description" : "The file format in which to return the export.",
+            "enum" : [ "CSV" ]
+          }
+        }
+      },
+      "CreateOfferRequest" : {
+        "type" : "object",
+        "required" : [ "condition", "ean", "fulfilment", "pricing", "stock" ],
+        "properties" : {
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product. Note: in case an ISBN is provided, the ISBN will be replaced with the actual EAN belonging to this ISBN."
+          },
+          "condition" : {
+            "$ref" : "#/definitions/Condition"
+          },
+          "referenceCode" : {
+            "type" : "string",
+            "example" : "REF12345",
+            "description" : "A user-defined reference that helps you identify this particular offer when receiving data from us. This element can optionally be left empty and has a maximum amount of 20 characters.",
+            "minLength" : 0,
+            "maxLength" : 20
+          },
+          "onHoldByRetailer" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Indicates whether or not you want to put this offer for sale on the bol.com website. Defaults to false."
+          },
+          "unknownProductTitle" : {
+            "type" : "string",
+            "example" : "Unknown Product Title",
+            "description" : "In case the item is not known to bol.com you can use this field to identify this particular product. Note: in case the product is known to bol.com, the unknown product title will not be stored.",
+            "minLength" : 0,
+            "maxLength" : 500
+          },
+          "pricing" : {
+            "$ref" : "#/definitions/Pricing"
+          },
+          "stock" : {
+            "$ref" : "#/definitions/StockCreate"
+          },
+          "fulfilment" : {
+            "$ref" : "#/definitions/Fulfilment"
+          }
+        }
+      },
+      "CustomerDetails" : {
+        "type" : "object",
+        "properties" : {
+          "salutationCode" : {
+            "type" : "string",
+            "example" : "02",
+            "description" : "The salutation code."
+          },
+          "firstName" : {
+            "type" : "string",
+            "example" : "Billie",
+            "description" : "The first name."
+          },
+          "surname" : {
+            "type" : "string",
+            "example" : "Jansen",
+            "description" : "The surname."
+          },
+          "streetName" : {
+            "type" : "string",
+            "example" : "Dorpstraat",
+            "description" : "The street name."
+          },
+          "houseNumber" : {
+            "type" : "string",
+            "example" : "1",
+            "description" : "The house number."
+          },
+          "houseNumberExtended" : {
+            "type" : "string",
+            "example" : "B",
+            "description" : "The extension on the house number."
+          },
+          "addressSupplement" : {
+            "type" : "string",
+            "example" : "Lorem Ipsum",
+            "description" : "The address supplement."
+          },
+          "extraAddressInformation" : {
+            "type" : "string",
+            "example" : "Apartment",
+            "description" : "Extra information about the address."
+          },
+          "zipCode" : {
+            "type" : "string",
+            "example" : "1111 ZZ",
+            "description" : "The ZIP code."
+          },
+          "city" : {
+            "type" : "string",
+            "example" : "Utrecht",
+            "description" : "The name of the city."
+          },
+          "countryCode" : {
+            "type" : "string",
+            "example" : "NL",
+            "description" : "The country code."
+          },
+          "email" : {
+            "type" : "string",
+            "example" : "billie@verkopen.bol.com",
+            "description" : "The e-mail address."
+          },
+          "deliveryPhoneNumber" : {
+            "type" : "string",
+            "example" : "012123456",
+            "description" : "The delivery phone number."
+          },
+          "company" : {
+            "type" : "string",
+            "example" : "bol.com",
+            "description" : "The company name."
+          },
+          "vatNumber" : {
+            "type" : "string",
+            "example" : "NL999999999B99",
+            "description" : "The VAT number."
+          }
+        }
+      },
+      "Delivery windows for inbound shipments." : {
+        "type" : "object",
+        "properties" : {
+          "timeSlots" : {
+            "type" : "array",
+            "description" : "An available timeslot to be reserved for inbound shipments.",
+            "items" : {
+              "$ref" : "#/definitions/TimeSlot"
+            }
+          }
+        }
+      },
+      "Fulfilment" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "example" : "FBR",
+            "description" : "Specifies whether this shipment has been fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB). Defaults to FBR.",
+            "enum" : [ "FBB", "FBR" ]
+          },
+          "deliveryCode" : {
+            "type" : "string",
+            "description" : "The delivery promise that applies to this offer.",
+            "enum" : [ "24uurs-23", "24uurs-22", "24uurs-21", "24uurs-20", "24uurs-19", "24uurs-18", "24uurs-17", "24uurs-16", "24uurs-15", "24uurs-14", "24uurs-13", "24uurs-12", "1-2d", "2-3d", "3-5d", "4-8d", "1-8d", "MijnLeverbelofte" ]
+          }
+        }
+      },
+      "Inbound" : {
+        "type" : "object",
+        "required" : [ "announcedBSKUs", "announcedQuantity", "fbbTransporter", "id", "labellingService", "products", "receivedBSKUs", "receivedQuantity", "reference", "state", "stateTransitions" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 12345678,
+            "description" : "A unique identifier for an inbound shipment."
+          },
+          "reference" : {
+            "type" : "string",
+            "example" : "SHIPMENT1",
+            "description" : "A user defined reference to identify the inbound shipment."
+          },
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-01-01T13:00:00.000+01:00",
+            "description" : "The date the inbound shipment was created in ISO 8601 format."
+          },
+          "state" : {
+            "type" : "string",
+            "example" : "Draft",
+            "description" : "The current state of the inbound shipment.",
+            "enum" : [ "Draft", "PreAnnounced", "ArrivedAtWH", "Cancelled" ]
+          },
+          "labellingService" : {
+            "type" : "boolean",
+            "example" : true,
+            "description" : "Indicates whether the inbound will be labeled by bol.com or not."
+          },
+          "announcedBSKUs" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1,
+            "description" : "The number of announced BSKU‘s."
+          },
+          "announcedQuantity" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 100,
+            "description" : "The number of announced items."
+          },
+          "receivedBSKUs" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1,
+            "description" : "The number of received BSKU‘s."
+          },
+          "receivedQuantity" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 100,
+            "description" : "The number of received items."
+          },
+          "timeSlot" : {
+            "description" : "The chosen timeslot for the inbound shipment.",
+            "$ref" : "#/definitions/TimeSlot"
+          },
+          "products" : {
+            "type" : "array",
+            "description" : "List of products.",
+            "items" : {
+              "$ref" : "#/definitions/Product"
+            }
+          },
+          "stateTransitions" : {
+            "type" : "array",
+            "description" : "List of state transitions.",
+            "items" : {
+              "$ref" : "#/definitions/StateTransition"
+            }
+          },
+          "fbbTransporter" : {
+            "description" : "Transporter for the inbound shipment.",
+            "$ref" : "#/definitions/Transporter"
+          }
+        }
+      },
+      "InboundRequest" : {
+        "type" : "object",
+        "required" : [ "fbbTransporter", "labellingService", "products", "timeSlot" ],
+        "properties" : {
+          "reference" : {
+            "type" : "string",
+            "example" : "SHIPMENT1",
+            "description" : "A user defined reference to identify the inbound shipment."
+          },
+          "timeSlot" : {
+            "description" : "The chosen timeslot for the inbound shipment.",
+            "$ref" : "#/definitions/TimeSlot"
+          },
+          "fbbTransporter" : {
+            "description" : "Transporter for the inbound shipment.",
+            "$ref" : "#/definitions/Transporter"
+          },
+          "labellingService" : {
+            "type" : "boolean",
+            "description" : "Indicates whether the inbound will be labeled by bol.com or not."
+          },
+          "products" : {
+            "type" : "array",
+            "description" : "List of products.",
+            "items" : {
+              "$ref" : "#/definitions/Product"
+            }
+          }
+        }
+      },
+      "Inbounds" : {
+        "type" : "object",
+        "required" : [ "inbounds" ],
+        "properties" : {
+          "inbounds" : {
+            "type" : "array",
+            "description" : "An inbound shipment.",
+            "items" : {
+              "$ref" : "#/definitions/Inbound"
+            }
+          }
+        }
+      },
+      "InventoryOffer" : {
+        "type" : "object",
+        "properties" : {
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "bsku" : {
+            "type" : "string",
+            "example" : "2950002126612",
+            "description" : "The BSKU number associated with this product."
+          },
+          "nckStock" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10,
+            "description" : "The stock that is not available for sale anymore (unsaleable)"
+          },
+          "stock" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10,
+            "description" : "The stock that is available for sale (saleable)."
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Product Title",
+            "description" : "The product title."
+          }
+        }
+      },
+      "InventoryResponse" : {
+        "type" : "object",
+        "required" : [ "offers" ],
+        "properties" : {
+          "offers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/InventoryOffer"
+            }
+          }
+        }
+      },
+      "Link" : {
+        "type" : "object",
+        "properties" : {
+          "rel" : {
+            "type" : "string",
+            "example" : "self"
+          },
+          "href" : {
+            "type" : "string",
+            "example" : "https://api.bol.com/retailer/process-status/v2/1234567"
+          },
+          "method" : {
+            "type" : "string",
+            "example" : "GET",
+            "description" : "HTTP method"
+          }
+        }
+      },
+      "NotPublishableReason" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "example" : "4003",
+            "description" : "Error code signalling that the offer is invalid."
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "The seller is on holiday.",
+            "description" : "Error message describing the reason the offer is invalid."
+          }
+        }
+      },
+      "Order" : {
+        "type" : "object",
+        "required" : [ "customerDetails", "orderItems" ],
+        "properties" : {
+          "orderId" : {
+            "type" : "string",
+            "example" : "4123456789",
+            "description" : "The order id."
+          },
+          "dateTimeOrderPlaced" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2017-02-09T12:39:48+01:00",
+            "description" : "The date and time in ISO 8601 format when the order was placed."
+          },
+          "customerDetails" : {
+            "$ref" : "#/definitions/OrderCustomerDetails"
+          },
+          "orderItems" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/OrderItem"
+            }
+          }
+        },
+        "description" : "An order"
+      },
+      "OrderCustomerDetails" : {
+        "type" : "object",
+        "required" : [ "billingDetails", "shipmentDetails" ],
+        "properties" : {
+          "shipmentDetails" : {
+            "$ref" : "#/definitions/AddressDetails"
+          },
+          "billingDetails" : {
+            "$ref" : "#/definitions/AddressDetails"
+          }
+        },
+        "description" : "Customer details of the order"
+      },
+      "OrderItem" : {
+        "type" : "object",
+        "properties" : {
+          "orderItemId" : {
+            "type" : "string",
+            "example" : "2012345678",
+            "description" : "The id for the order item (1 order can have multiple order items)."
+          },
+          "offerReference" : {
+            "type" : "string",
+            "example" : "BOLCOM00123",
+            "description" : "Value provided by retailer through Offer API as ‘referenceCode’."
+          },
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Product Title",
+            "description" : "Title of the product as shown on the webshop."
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10,
+            "description" : "Amount of the product being ordered."
+          },
+          "offerPrice" : {
+            "type" : "number",
+            "example" : 27.95,
+            "description" : "The total price for this order (item price multiplied by the quantity)."
+          },
+          "transactionFee" : {
+            "type" : "number",
+            "example" : 5.18,
+            "description" : "Fee of the transaction."
+          },
+          "latestDeliveryDate" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2017-02-10",
+            "description" : "Result of the date the order was placed combined with the delivery promise made by the retailer."
+          },
+          "offerCondition" : {
+            "type" : "string",
+            "example" : "NEW",
+            "description" : "Condition of the offer."
+          },
+          "cancelRequest" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Indicates whether the order was cancelled on request of the customer before the retailer has shipped it."
+          },
+          "fulfilmentMethod" : {
+            "type" : "string",
+            "example" : "FBR",
+            "description" : "Specifies whether this shipment has been fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB). Defaults to FBR."
+          },
+          "selectedDeliveryWindow" : {
+            "$ref" : "#/definitions/SelectedDeliveryWindow"
+          }
+        },
+        "description" : "Order item details from an order"
+      },
+      "Pricing" : {
+        "type" : "object",
+        "required" : [ "bundlePrices" ],
+        "properties" : {
+          "bundlePrices" : {
+            "type" : "array",
+            "description" : "A set of prices (containing a quantity and selling price) that apply to this offer.",
+            "items" : {
+              "$ref" : "#/definitions/BundlePrice"
+            },
+            "maxItems" : 4,
+            "minItems" : 1
+          }
+        }
+      },
+      "Problem" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "format" : "uri",
+            "example" : "http://api.bol.com/problems",
+            "description" : "Type URI for this problem. Fixed value: http://api.bol.com/problems."
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Error validating request body. Consult the bol.com API documentation for more information.",
+            "description" : "Title describing the nature of the problem."
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : "40X",
+            "description" : "HTTP status returned from the endpoint causing the problem."
+          },
+          "detail" : {
+            "type" : "string",
+            "example" : "Bad request",
+            "description" : "Detailed error message describing in additional detail what caused the service to return this problem."
+          },
+          "host" : {
+            "type" : "string",
+            "example" : "Instance-001",
+            "description" : "Host identifier describing the server instance that reported the problem."
+          },
+          "instance" : {
+            "type" : "string",
+            "format" : "uri",
+            "example" : "https://api.bol.com//retailer/resource",
+            "description" : "Full URI path of the resource that reported the problem."
+          },
+          "violations" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Violation"
+            }
+          }
+        },
+        "description" : "Describes a problem that occurred interacting with the API."
+      },
+      "ProcessStatus" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 1234567,
+            "description" : "The process status id."
+          },
+          "entityId" : {
+            "type" : "string",
+            "example" : "987654321",
+            "description" : "The id of the object being processed. E.g. in case of a shipment process id, you will receive the id of the order item being processed."
+          },
+          "eventType" : {
+            "type" : "string",
+            "example" : "PROCESS_EXAMPLE",
+            "description" : "Name of the requested action that is being processed."
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Example request for processing 987654321.",
+            "description" : "Describes the action that is being processed."
+          },
+          "status" : {
+            "type" : "string",
+            "example" : "SUCCESS",
+            "description" : "Status of the action being processed.",
+            "enum" : [ "PENDING", "SUCCESS", "FAILURE", "TIMEOUT" ]
+          },
+          "errorMessage" : {
+            "type" : "string",
+            "example" : "The example has been processed.",
+            "description" : "Shows error message if applicable."
+          },
+          "createTimestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-11-14T09:34:41.000+01:00",
+            "description" : "Time of creation of the response."
+          },
+          "links" : {
+            "type" : "array",
+            "description" : "Lists available actions applicable to this endpoint.",
+            "items" : {
+              "$ref" : "#/definitions/Link"
+            }
+          }
+        }
+      },
+      "ProcessStatusResponse" : {
+        "type" : "object",
+        "required" : [ "processStatuses" ],
+        "properties" : {
+          "processStatuses" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ProcessStatus"
+            }
+          }
+        }
+      },
+      "Product" : {
+        "type" : "object",
+        "properties" : {
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "bsku" : {
+            "type" : "string",
+            "example" : "2950002126612",
+            "description" : "The BSKU number associated with this product."
+          },
+          "announcedQuantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 100,
+            "description" : "The number of announced items."
+          },
+          "receivedQuantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 100,
+            "description" : "The number of received items."
+          },
+          "state" : {
+            "type" : "string",
+            "example" : "Draft",
+            "description" : "The current state of the inbound product.",
+            "enum" : [ "Draft", "PreAnnounced", "ArrivedAtWH", "Cancelled" ]
+          }
+        }
+      },
+      "ProductLabel" : {
+        "type" : "object",
+        "required" : [ "ean", "quantity" ],
+        "properties" : {
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10,
+            "description" : "Number of products to generate labels for."
+          }
+        }
+      },
+      "PurchasableShippingLabel" : {
+        "type" : "object",
+        "properties" : {
+          "transporterCode" : {
+            "type" : "string",
+            "example" : "TNT",
+            "description" : "A code representing the transporter which is being used for transportation."
+          },
+          "labelType" : {
+            "type" : "string",
+            "example" : "PARCEL",
+            "description" : "The type of the label, representing the way an item is being transported."
+          },
+          "maxWeight" : {
+            "type" : "string",
+            "example" : "10 kg",
+            "description" : "The weight of a package."
+          },
+          "maxDimensions" : {
+            "type" : "string",
+            "example" : "10 x 10 x 10 cm",
+            "description" : "The dimensions of a package."
+          },
+          "retailerPrice" : {
+            "type" : "number",
+            "example" : 1.0,
+            "description" : "The price the item has been sold for."
+          },
+          "purchasePrice" : {
+            "type" : "number",
+            "example" : 1.0,
+            "description" : "The price the item has been bought for."
+          },
+          "discount" : {
+            "type" : "number",
+            "example" : 1.0,
+            "description" : "The discount of the item that has been sold."
+          },
+          "shippingLabelCode" : {
+            "type" : "string",
+            "example" : "PLR00000001",
+            "description" : "An unique code referring to the shipping label."
+          }
+        }
+      },
+      "PurchasableShippingLabelsResponse" : {
+        "type" : "object",
+        "required" : [ "purchasableShippingLabels" ],
+        "properties" : {
+          "purchasableShippingLabels" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PurchasableShippingLabel"
+            }
+          }
+        }
+      },
+      "ReducedOrder" : {
+        "type" : "object",
+        "required" : [ "orderItems" ],
+        "properties" : {
+          "orderId" : {
+            "type" : "string",
+            "example" : "4123456789",
+            "description" : "The order id."
+          },
+          "dateTimeOrderPlaced" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2017-02-09T12:39:48+01:00",
+            "description" : "The date and time in ISO 8601 format when the order was placed."
+          },
+          "orderItems" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ReducedOrderItem"
+            }
+          }
+        },
+        "description" : "An order"
+      },
+      "ReducedOrderItem" : {
+        "type" : "object",
+        "properties" : {
+          "orderItemId" : {
+            "type" : "string",
+            "example" : "2012345678",
+            "description" : "The id for the order item (1 order can have multiple order items)."
+          },
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "cancelRequest" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Indicates whether the order was cancelled on request of the customer before the retailer has shipped it."
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10,
+            "description" : "Amount of the product being ordered."
+          }
+        },
+        "description" : "An order item"
+      },
+      "ReducedOrders" : {
+        "type" : "object",
+        "required" : [ "orders" ],
+        "properties" : {
+          "orders" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ReducedOrder"
+            }
+          }
+        },
+        "description" : "Container for many orders"
+      },
+      "ReducedReturnItem" : {
+        "type" : "object",
+        "properties" : {
+          "rmaId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 31234567,
+            "description" : "The RMA (Return Merchandise Authorization) id that identifies this particular return."
+          },
+          "orderId" : {
+            "type" : "string",
+            "example" : "4012345678",
+            "description" : "The id of the customer order this return item is in."
+          },
+          "ean" : {
+            "type" : "string",
+            "example" : "9789076174082",
+            "description" : "The EAN number associated with this product."
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1,
+            "description" : "The quantity that is returned by the customer. Note: this can be greater than 1 in case the customer ordered a quantity greater than 1 of the same product in the same customer order"
+          },
+          "registrationDateTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2016-11-14T11:06:48.423+01:00",
+            "description" : "The date and time in ISO 8601 format when this return was registered."
+          },
+          "returnReason" : {
+            "type" : "string",
+            "example" : "Niet naar verwachting",
+            "description" : "The reason why the customer returned this product."
+          },
+          "returnReasonComments" : {
+            "type" : "string",
+            "example" : "Lorem Ipsum",
+            "description" : "Additional details from the customer as to why this item was returned."
+          },
+          "fulfilmentMethod" : {
+            "type" : "string",
+            "example" : "FBR",
+            "description" : "Specifies whether this shipment has been fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB). Defaults to FBR."
+          },
+          "handled" : {
+            "type" : "boolean",
+            "example" : true,
+            "description" : "Indicates if this return item has been handled (by the retailer)."
+          },
+          "handlingResult" : {
+            "type" : "string",
+            "example" : "RETURN_RECEIVED",
+            "description" : "The handling result requested by the user."
+          },
+          "processingResult" : {
+            "type" : "string",
+            "example" : "ACCEPTED",
+            "description" : "The processing result of the return."
+          },
+          "processingDateTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-04-17T10:55:37+02:00",
+            "description" : "The date and time in ISO 8601 format when the return was processed."
+          }
+        }
+      },
+      "ReducedShipment" : {
+        "type" : "object",
+        "required" : [ "shipmentItems", "transport" ],
+        "properties" : {
+          "shipmentId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 541757635,
+            "description" : "A unique identifier for this shipment."
+          },
+          "shipmentDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-04-17T10:55:37+02:00",
+            "description" : "The date and time in ISO 8601 format when the order item was shipped."
+          },
+          "shipmentReference" : {
+            "type" : "string",
+            "example" : "BOLCOM001",
+            "description" : "Reference supplied by the user when this item was shipped."
+          },
+          "shipmentItems" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ReducedShipmentItem"
+            }
+          },
+          "transport" : {
+            "$ref" : "#/definitions/ReducedTransport"
+          }
+        }
+      },
+      "ReducedShipmentItem" : {
+        "type" : "object",
+        "properties" : {
+          "orderItemId" : {
+            "type" : "string",
+            "example" : "1234567891",
+            "description" : "A unique identifier for the item of the order that was shipped in this shipment."
+          },
+          "orderId" : {
+            "type" : "string",
+            "example" : "4123456789",
+            "description" : "A unique identifier for the order this shipment is related to."
+          }
+        }
+      },
+      "ReducedTransport" : {
+        "type" : "object",
+        "properties" : {
+          "transportId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 312778947,
+            "description" : "The transport id."
+          }
+        }
+      },
+      "Reduction" : {
+        "type" : "object",
+        "properties" : {
+          "maximumPrice" : {
+            "type" : "number",
+            "example" : 29.99,
+            "description" : "Maximum offer price that can be used to benefit from a commission reduction."
+          },
+          "costReduction" : {
+            "type" : "number",
+            "example" : 2.99,
+            "description" : "A reduction to the commission if the maximum price criteria is met."
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2018-01-01",
+            "description" : "The start date from which the commission reduction is valid."
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2018-01-01",
+            "description" : "The end date from which the commission reduction is not valid anymore."
+          }
+        }
+      },
+      "RetailerOffer" : {
+        "type" : "object",
+        "required" : [ "condition", "fulfilment", "notPublishableReasons", "pricing", "stock", "store" ],
+        "properties" : {
+          "offerId" : {
+            "type" : "string",
+            "example" : "6ff736b5-cdd0-4150-8c67-78269ee986f5",
+            "description" : "Unique identifier for an offer."
+          },
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product. Note: in case an ISBN is provided, the ISBN will be replaced with the actual EAN belonging to this ISBN."
+          },
+          "referenceCode" : {
+            "type" : "string",
+            "example" : "REF12345",
+            "description" : "A user-defined reference that helps you identify this particular offer when receiving data from us. This element can optionally be left empty and has a maximum amount of 20 characters."
+          },
+          "onHoldByRetailer" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Indicates whether or not you want to put this offer for sale on the bol.com website. Defaults to false."
+          },
+          "unknownProductTitle" : {
+            "type" : "string",
+            "example" : "Unknown Product Title",
+            "description" : "In case the item is not known to bol.com you can use this field to identify this particular product. Note: in case the product is known to bol.com, the unknown product title will not be stored."
+          },
+          "pricing" : {
+            "$ref" : "#/definitions/Pricing"
+          },
+          "stock" : {
+            "$ref" : "#/definitions/Stock"
+          },
+          "fulfilment" : {
+            "$ref" : "#/definitions/Fulfilment"
+          },
+          "store" : {
+            "$ref" : "#/definitions/Store"
+          },
+          "condition" : {
+            "$ref" : "#/definitions/Condition"
+          },
+          "notPublishableReasons" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/NotPublishableReason"
+            }
+          }
+        }
+      },
+      "ReturnItem" : {
+        "type" : "object",
+        "properties" : {
+          "rmaId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 31234567,
+            "description" : "The RMA (Return Merchandise Authorization) id that identifies this particular return."
+          },
+          "orderId" : {
+            "type" : "string",
+            "example" : "4012345678",
+            "description" : "The id of the customer order this return item is in."
+          },
+          "ean" : {
+            "type" : "string",
+            "example" : "9789076174082",
+            "description" : "The EAN number associated with this product."
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Harry Potter en de steen der wijzen",
+            "description" : "The product title."
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1,
+            "description" : "The quantity that is returned by the customer. Note: this can be greater than 1 in case the customer ordered a quantity greater than 1 of the same product in the same customer order"
+          },
+          "registrationDateTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2016-11-14T11:06:48.423+01:00",
+            "description" : "The date and time in ISO 8601 format when this return was registered."
+          },
+          "returnReason" : {
+            "type" : "string",
+            "example" : "Niet naar verwachting",
+            "description" : "The reason why the customer returned this product."
+          },
+          "returnReasonComments" : {
+            "type" : "string",
+            "example" : "Lorem Ipsum",
+            "description" : "Additional details from the customer as to why this item was returned."
+          },
+          "customerDetails" : {
+            "$ref" : "#/definitions/CustomerDetails"
+          },
+          "fulfilmentMethod" : {
+            "type" : "string",
+            "example" : "FBR",
+            "description" : "Specifies whether this shipment has been fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB). Defaults to FBR."
+          },
+          "handled" : {
+            "type" : "boolean",
+            "example" : true,
+            "description" : "Indicates if this return item has been handled (by the retailer)."
+          },
+          "trackAndTrace" : {
+            "type" : "string",
+            "example" : "3SBOL0987654321",
+            "description" : "The track and trace code that is associated with this transport."
+          },
+          "handlingResult" : {
+            "type" : "string",
+            "example" : "RETURN_RECEIVED",
+            "description" : "The handling result requested by the user."
+          },
+          "processingResult" : {
+            "type" : "string",
+            "example" : "ACCEPTED",
+            "description" : "The processing result of the return."
+          },
+          "processingDateTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-04-17T10:55:37+02:00",
+            "description" : "The date and time in ISO 8601 format when the return was processed."
+          }
+        }
+      },
+      "ReturnRequest" : {
+        "type" : "object",
+        "required" : [ "quantityReturned" ],
+        "properties" : {
+          "handlingResult" : {
+            "type" : "string",
+            "example" : "RETURN_RECEIVED",
+            "enum" : [ "RETURN_RECEIVED", "EXCHANGE_PRODUCT", "RETURN_DOES_NOT_MEET_CONDITIONS", "REPAIR_PRODUCT", "CUSTOMER_KEEPS_PRODUCT_PAID", "STILL_APPROVED" ]
+          },
+          "quantityReturned" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1,
+            "minimum" : 1,
+            "maximum" : 9999
+          }
+        }
+      },
+      "ReturnsResponse" : {
+        "type" : "object",
+        "required" : [ "returns" ],
+        "properties" : {
+          "returns" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ReducedReturnItem"
+            }
+          }
+        }
+      },
+      "SelectedDeliveryWindow" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-01-01"
+          },
+          "start" : {
+            "type" : "string",
+            "example" : "13:00:00",
+            "description" : "The timeslot start date and time in ISO 8601 format."
+          },
+          "end" : {
+            "type" : "string",
+            "example" : "13:00:00",
+            "description" : "The timeslot end date and time in ISO 8601 format."
+          }
+        },
+        "description" : "The selected delivery window of the order"
+      },
+      "Shipment" : {
+        "type" : "object",
+        "required" : [ "customerDetails", "shipmentItems", "transport" ],
+        "properties" : {
+          "shipmentId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 541757635,
+            "description" : "A unique identifier for this shipment."
+          },
+          "shipmentDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-04-17T10:55:37+02:00",
+            "description" : "The date and time in ISO 8601 format when the order item was shipped."
+          },
+          "shipmentReference" : {
+            "type" : "string",
+            "example" : "BOLCOM001",
+            "description" : "Reference supplied by the user when this item was shipped."
+          },
+          "shipmentItems" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ShipmentItem"
+            }
+          },
+          "transport" : {
+            "$ref" : "#/definitions/Transport"
+          },
+          "customerDetails" : {
+            "$ref" : "#/definitions/CustomerDetails"
+          }
+        }
+      },
+      "ShipmentItem" : {
+        "type" : "object",
+        "properties" : {
+          "orderItemId" : {
+            "type" : "string",
+            "example" : "1234567891",
+            "description" : "A unique identifier for the item of the order that was shipped in this shipment."
+          },
+          "orderId" : {
+            "type" : "string",
+            "example" : "4123456789",
+            "description" : "A unique identifier for the order this shipment is related to."
+          },
+          "orderDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-04-17T10:55:37+02:00",
+            "description" : "The date and time in ISO 8601 format when the order was placed."
+          },
+          "latestDeliveryDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-04-20T10:55:37+02:00",
+            "description" : "The date and time in ISO 8601 format when the order was promised to be delivered."
+          },
+          "ean" : {
+            "type" : "string",
+            "example" : "0000007740404",
+            "description" : "The EAN number associated with this product."
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "Product Title",
+            "description" : "The product title."
+          },
+          "quantity" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 10,
+            "description" : "Amount of the product being ordered."
+          },
+          "offerPrice" : {
+            "type" : "number",
+            "example" : 12.99,
+            "description" : "The total price for this order (item price multiplied by the quantity)."
+          },
+          "offerCondition" : {
+            "type" : "string",
+            "example" : "NEW",
+            "description" : "Condition of the offer.",
+            "enum" : [ "NEW", "AS_NEW", "GOOD", "REASONABLE", "MODERATE" ]
+          },
+          "offerReference" : {
+            "type" : "string",
+            "example" : "BOLCOM00123",
+            "description" : "The reference provided by the retailer through the offer API (refered to as ‘referenceCode’)."
+          },
+          "fulfilmentMethod" : {
+            "type" : "string",
+            "example" : "FBR",
+            "description" : "Specifies whether this shipment has been fulfilled by the retailer (FBR) or fulfilled by bol.com (FBB). Defaults to FBR.",
+            "enum" : [ "FBR", "FBB" ]
+          },
+          "selectedDeliveryWindow" : {
+            "$ref" : "#/definitions/SelectedDeliveryWindow"
+          }
+        }
+      },
+      "ShipmentRequest" : {
+        "type" : "object",
+        "properties" : {
+          "shipmentReference" : {
+            "type" : "string",
+            "example" : "B321SR",
+            "description" : "Used for administration purposes."
+          },
+          "shippingLabelCode" : {
+            "type" : "string",
+            "example" : "PLR00000002",
+            "description" : "Specifies shipping label to be used for this shipment. Can be retrieved through the shipping label endpoint."
+          },
+          "transport" : {
+            "$ref" : "#/definitions/TransportInstruction"
+          }
+        }
+      },
+      "ShipmentResponse" : {
+        "type" : "object",
+        "required" : [ "shipments" ],
+        "properties" : {
+          "shipments" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ReducedShipment"
+            }
+          }
+        }
+      },
+      "StateTransition" : {
+        "type" : "object",
+        "required" : [ "state" ],
+        "properties" : {
+          "state" : {
+            "type" : "string",
+            "example" : "Draft",
+            "description" : "The state that was transitioned into.",
+            "enum" : [ "Draft", "PreAnnounced", "ArrivedAtWH", "Cancelled" ]
+          },
+          "stateDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-01-01T13:00:00.000+01:00",
+            "description" : "The transition date and time in ISO 8601 format."
+          }
+        }
+      },
+      "Stock" : {
+        "type" : "object",
+        "required" : [ "amount" ],
+        "properties" : {
+          "amount" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 6,
+            "description" : "The amount of stock available for the specified product present in the retailers warehouse. Note: this should not be the FBB stock! Defaults to 0."
+          },
+          "correctedStock" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 5,
+            "description" : "The amount of items in stock minus handled order and minus open orders. As compared to the stock you sent us. When this reaches zero, your offer will not be for sale on the shop."
+          },
+          "managedByRetailer" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Configures whether the retailer manages the stock levels or that bol.com should calculate the corrected stock based on actual open orders. In case the configuration is set to 'false', all open orders are used to calculate the corrected stock. In case the configuration is set to 'true', only orders that are placed after the last offer update are taken into account. Default is set to 'false'."
+          }
+        }
+      },
+      "StockCreate" : {
+        "type" : "object",
+        "required" : [ "amount", "managedByRetailer" ],
+        "properties" : {
+          "amount" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 6,
+            "description" : "The amount of stock available for the specified product present in the retailers warehouse. Note: this should not be the FBB stock! Defaults to 0.",
+            "minimum" : 0,
+            "maximum" : 999
+          },
+          "managedByRetailer" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Configures whether the retailer manages the stock levels or that bol.com should calculate the corrected stock based on actual open orders. In case the configuration is set to 'false', all open orders are used to calculate the corrected stock. In case the configuration is set to 'true', only orders that are placed after the last offer update are taken into account. Default is set to 'false'."
+          }
+        }
+      },
+      "Store" : {
+        "type" : "object",
+        "properties" : {
+          "productTitle" : {
+            "type" : "string",
+            "example" : "Product Title",
+            "description" : "The product title for the product associated with this offer."
+          },
+          "visible" : {
+            "type" : "array",
+            "example" : "NL, BE",
+            "description" : "Countries in which this offer is currently on sale in the webshop.",
+            "items" : {
+              "$ref" : "#/definitions/CountryCode"
+            }
+          }
+        }
+      },
+      "TimeSlot" : {
+        "type" : "object",
+        "required" : [ "end", "start" ],
+        "properties" : {
+          "start" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-01-01T13:00:00.000+01:00",
+            "description" : "The timeslot start date and time in ISO 8601 format."
+          },
+          "end" : {
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2018-01-01T13:00:00.000+01:00",
+            "description" : "The timeslot end date and time in ISO 8601 format."
+          }
+        }
+      },
+      "Transport" : {
+        "type" : "object",
+        "properties" : {
+          "transportId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 312778947,
+            "description" : "The transport id."
+          },
+          "transporterCode" : {
+            "type" : "string",
+            "example" : "TNT",
+            "description" : "Specify the transporter that will carry out the shipment."
+          },
+          "trackAndTrace" : {
+            "type" : "string",
+            "example" : "3SBOL0987654321",
+            "description" : "The track and trace code that is associated with this transport."
+          },
+          "shippingLabelId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "example" : 123456789,
+            "description" : "The shipping label id."
+          }
+        }
+      },
+      "TransportInstruction" : {
+        "type" : "object",
+        "properties" : {
+          "transporterCode" : {
+            "type" : "string",
+            "example" : "TNT",
+            "description" : "Specify the transporter that will carry out the shipment."
+          },
+          "trackAndTrace" : {
+            "type" : "string",
+            "example" : "3SBOL0987654321",
+            "description" : "The track and trace code that is associated with this transport."
+          }
+        }
+      },
+      "Transporter" : {
+        "type" : "object",
+        "required" : [ "code", "name" ],
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "TNT Post",
+            "description" : "The transporter name."
+          },
+          "code" : {
+            "type" : "string",
+            "example" : "TNT",
+            "description" : "The transporter code."
+          }
+        }
+      },
+      "TransportersResponse" : {
+        "type" : "object",
+        "required" : [ "fbbTransporters" ],
+        "properties" : {
+          "fbbTransporters" : {
+            "type" : "array",
+            "readOnly" : true,
+            "items" : {
+              "$ref" : "#/definitions/Transporter"
+            }
+          }
+        }
+      },
+      "UpdateOfferPriceRequest" : {
+        "type" : "object",
+        "required" : [ "pricing" ],
+        "properties" : {
+          "pricing" : {
+            "$ref" : "#/definitions/Pricing"
+          }
+        }
+      },
+      "UpdateOfferRequest" : {
+        "type" : "object",
+        "required" : [ "fulfilment" ],
+        "properties" : {
+          "referenceCode" : {
+            "type" : "string",
+            "example" : "REF12345",
+            "description" : "A user-defined reference that helps you identify this particular offer when receiving data from us. This element can optionally be left empty and has a maximum amount of 20 characters.",
+            "minLength" : 0,
+            "maxLength" : 20
+          },
+          "onHoldByRetailer" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Indicates whether or not you want to put this offer for sale on the bol.com website. Defaults to false."
+          },
+          "unknownProductTitle" : {
+            "type" : "string",
+            "example" : "Unknown Product Title",
+            "description" : "In case the item is not known to bol.com you can use this field to identify this particular product. Note: in case the product is known to bol.com, the unknown product title will not be stored.",
+            "minLength" : 0,
+            "maxLength" : 500
+          },
+          "fulfilment" : {
+            "$ref" : "#/definitions/Fulfilment"
+          }
+        }
+      },
+      "UpdateOfferStockRequest" : {
+        "type" : "object",
+        "required" : [ "amount", "managedByRetailer" ],
+        "properties" : {
+          "amount" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 6,
+            "description" : "The amount of stock available for the specified product present in the retailers warehouse. Note: this should not be the FBB stock! Defaults to 0.",
+            "minimum" : 0,
+            "maximum" : 999
+          },
+          "managedByRetailer" : {
+            "type" : "boolean",
+            "example" : false,
+            "description" : "Configures whether the retailer manages the stock levels or that bol.com should calculate the corrected stock based on actual open orders. In case the configuration is set to 'false', all open orders are used to calculate the corrected stock. In case the configuration is set to 'true', only orders that are placed after the last offer update are taken into account. Default is set to 'false'."
+          }
+        }
+      },
+      "Violation" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string",
+            "example" : "exampleValue",
+            "description" : "Describes the origin of the error, for instance a field or query parameter validation error."
+          },
+          "reason" : {
+            "type" : "string",
+            "example" : "Request contains invalid value(s): 'INVALID', allowed values: ALLOWED_VALUE1, ALLOWED_VALUE2.",
+            "description" : "Detailed description of the validation error that caused the problem."
+          }
+        },
+        "description" : "Describes a violation that occurred interacting with the API."
+      },
+      "commissionRequest" : {
+        "type" : "object",
+        "required" : [ "commissionQueries" ],
+        "properties" : {
+          "commissionQueries" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/CommissionQuery"
+            }
+          }
+        }
+      },
+      "commissionResponse" : {
+        "type" : "object",
+        "required" : [ "commissions" ],
+        "properties" : {
+          "commissions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/Commission"
+            }
+          }
+        }
+      },
+      "productLabelsRequest" : {
+        "type" : "object",
+        "required" : [ "productLabels" ],
+        "properties" : {
+          "format" : {
+            "type" : "string"
+          },
+          "productLabels" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/ProductLabel"
+            },
+            "maxItems" : 2147483647,
+            "minItems" : 1
+          }
+        }
+      }
+    }
+  }

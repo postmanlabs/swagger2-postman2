@@ -162,6 +162,19 @@ describe('the converter', function () {
     });
   });
 
+  it('should convert response body in case of custom content type headers.', function(done) {
+    var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'swagger4.json'), 'utf8');
+
+    Converter.convert({ type: 'string', data: sampleString }, {}, (err, result) => {
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].data).to.have.property('info');
+      expect(result.output[0].data).to.have.property('item');
+    });
+    done();
+  });
+
   it('should convert path paramters to postman-compatible paramters', function (done) {
     var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger2-with-params.json');
 
