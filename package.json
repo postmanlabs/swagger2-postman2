@@ -1,6 +1,6 @@
 {
   "name": "swagger2-to-postmanv2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A module to convert swagger 2.0 specs to Postman Collection Format v2",
   "main": "index.js",
   "scripts": {
