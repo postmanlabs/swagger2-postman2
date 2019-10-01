@@ -1,5 +1,8 @@
 CHANGELOG
 
+#### v0.1.0 (Oct 1, 2019)
+* Upgrade OpenAPI importer to v0.1.0
+
 #### v0.0.4 (Sep 3, 2019)
 * Upgrade OpenAPI importer to v0.0.18
 * Returning actionable message in case of conversion errors
