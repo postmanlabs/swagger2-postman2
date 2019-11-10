@@ -2,27 +2,34 @@ let expect = require('chai').expect,
   getOptions = require('../../index').getOptions;
 
 const optionIds = [
-    'collapseLongFolders',
-    'rootRequestBodyType',
-    'exampleBodyType',
+    'collapseFolders',
+    'schemaFaker',
+    'requestParametersResolution',
+    'exampleParametersResolution',
     'folderStrategy',
     'indentCharacter',
     'requestNameSource'
   ],
   expectedOptions = {
-    collapseLongFolders: {
+    collapseFolders: {
       name: 'Toggle for collapsing folder for long routes',
       type: 'boolean',
       default: true,
       description: 'Collapse folders in case of long routes leading to unnecessary folders'
     },
-    rootRequestBodyType: {
+    schemaFaker: {
+      name: 'Toggle for faking schema',
+      type: 'boolean',
+      default: true,
+      description: 'Option for Fake the schema using json or xml schema faker'
+    },
+    requestParametersResolution: {
       name: 'Set root request body type',
       type: 'string',
       default: 'schema',
       description: 'Option for setting root request body between schema or example'
     },
-    exampleBodyType: {
+    exampleParametersResolution: {
       name: 'Set example request and response body type',
       type: 'string',
       default: 'example',
