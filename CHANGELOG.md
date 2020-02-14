@@ -1,5 +1,8 @@
 CHANGELOG
 
+#### v1.0.0 (Feb 14, 2020)
+* Upgrade OpenAPI importer to ^1.1.7
+
 #### v0.2.0 (Nov 22, 2019)
 * Upgrade OpenAPI importer to 0.2.0
 * Added various options for converting Swagger specs into Postman Collections, including controlling how examples are generated
