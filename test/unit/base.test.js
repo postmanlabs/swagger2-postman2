@@ -200,4 +200,17 @@ describe('the converter', function () {
   });
 });
 
+describe('Must return meta data for a swagger schema', function() {
+  it('Sampleswagger.json', function(done) {
+    var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
 
+    Converter.getMetaData({ type: 'string', data: sampleString }, (err, result) => {
+      expect(result.result).to.equal(true);
+      expect(result.name).to.equal('Swagger Petstore');
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].name).to.have.equal('Swagger Petstore');
+    });
+    done();
+  });
+});
