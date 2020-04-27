@@ -1,6 +1,5 @@
 var expect = require('chai').expect,
   Converter = require('../../index.js'),
-  Helpers = require('../../lib/helpers.js'),
   fs = require('fs'),
   path = require('path'),
   VALID_SWAGGER_PATH = '../data/valid_swagger',
@@ -41,73 +40,6 @@ describe('The converter must identify invalid specs: ', function () {
         });
 
       expect(convertResult.result).to.equal(false);
-    });
-  });
-});
-
-
-//Helpers
-describe.skip('Helpers', function () {
-  it('getBasePath should return the correct basePath', function() {
-    var swagger = {
-        host: 'getpostman.com',
-        basePath: '/api',
-        schemes: ['https']
-      },
-      basePath = Helpers.getBasePath(swagger);
-
-    expect(basePath).to.equal('https://getpostman.com/api/');
-  });
-
-  it('handleParams should return the correct basePath for http', function() {
-    var swagger = {
-        host: 'getpostman.com',
-        basePath: '/api',
-        schemes: ['http']
-      },
-      basePath = Helpers.getBasePath(swagger);
-
-    expect(basePath).to.equal('http://getpostman.com/api/');
-  });
-
-  it('should generate the correct request names for PathItems', function(done) {
-    var swagger = {
-      swagger: '2.0',
-      host: 'getpostman.com',
-      basePath: '/api',
-      schemes: ['http'],
-      info: {
-        description: 'My API',
-        version: '1.0.0',
-        title: 'My API',
-        termsOfService: 'http://www.domain.com',
-        contact: {
-          name: 'support@domain.com'
-        }
-      },
-      paths: {
-        req1: {
-          post: {
-            operationId: 'req1'
-          }
-        },
-        req2: {
-          post: {
-          }
-        },
-        req3: {
-          post: {
-            summary: 'req3'
-          }
-        }
-      }
-    };
-
-    Converter.convert({ type: 'json', data: swagger }, {}, (err, result) => {
-      expect(result.output[0].data.item[0].name).to.equal('req1'); // from operationId
-      expect(result.output[0].data.item[1].name).to.equal('http://getpostman.com/api/req2'); // from URL
-      expect(result.output[0].data.item[2].name).to.equal('req3'); // from summary
-      done();
     });
   });
 });
