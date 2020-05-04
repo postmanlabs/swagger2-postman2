@@ -1,4 +1,7 @@
 # Swagger2-Postman Changelog
+#### v1.0.2 (May 4, 2020)
+* Changed 'Url' to 'URL' in Name requests option
+
 #### v1.0.1 (April 28, 2020)
 * Added a new function to get meta data from schema.
 
