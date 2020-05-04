@@ -1,5 +1,5 @@
 # Swagger2-Postman Changelog
-#### v1.0.0 (Feb 14, 2020)
+#### v1.0.1 (April 28, 2020)
 * Added a new function to get meta data from schema.
 
 #### v1.0.0 (Feb 14, 2020)
