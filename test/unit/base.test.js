@@ -130,6 +130,31 @@ describe('the converter', function () {
       done();
     });
   });
+
+  it('should name the requests based on requestNameSource parameter, value=`URL`', function (done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger3.json');
+
+    Converter.convert({ type: 'file', data: samplePath }, { requestNameSource: 'URL' }, function(err, convertResult) {
+      let request = convertResult.output[0].data.item[0].request;
+
+      expect(err).to.be.null;
+      expect(request.name).to.equal('{{baseUrl}}/');
+      done();
+    });
+  });
+
+  it('should name the requests based on requestNameSource parameter, value=`Fallback`', function (done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger3.json');
+
+    Converter.convert({ type: 'file', data: samplePath },
+      { requestNameSource: 'Fallback' }, function(err, convertResult) {
+        let request = convertResult.output[0].data.item[0].request;
+
+        expect(err).to.be.null;
+        expect(request.name).to.equal('List API versions');
+        done();
+      });
+  });
 });
 
 describe('Must return meta data for a swagger schema', function() {
