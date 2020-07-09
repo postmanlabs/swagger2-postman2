@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "js-yaml": "3.13.1",
-    "lodash": "4.17.13",
+    "lodash": "4.17.16",
     "openapi-to-postmanv2": "^1.1.7",
     "swagger2openapi": "5.3.0"
   },
