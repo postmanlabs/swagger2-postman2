@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "js-yaml": "3.10.0",
-    "json-schema-faker": "git+https://github.com/purecloudlabs/json-schema-faker",
+    "json-schema-faker": "git+https://github.com/purecloudlabs/json-schema-faker#DEVENGAGE-92-Tracking-down-failed-swagger-job",
     "lodash": "4.17.11",
     "node-uuid": "1.4.3",
     "postman-collection": "3.2.0",
@@ -18,5 +18,4 @@
     "fast-safe-stringify": "^2.0.6",
     "url": "^0.11.0"
   }
-  
 }
