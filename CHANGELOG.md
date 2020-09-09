@@ -1,4 +1,7 @@
 # Swagger2-Postman Changelog
+#### v1.0.3 (September 9, 2020)
+* Added support for new options added in latest openapi-to-postmanv2.
+
 #### v1.0.2 (May 4, 2020)
 * Changed 'Url' to 'URL' in Name requests option
 
