@@ -6,7 +6,10 @@ const optionIds = [
     'requestParametersResolution',
     'exampleParametersResolution',
     'indentCharacter',
-    'requestNameSource'
+    'requestNameSource',
+    'folderStrategy',
+    'optimizeConversion',
+    'includeAuthInfoInExample'
   ],
   expectedOptions = {
     collapseFolders: {
@@ -51,6 +54,27 @@ const optionIds = [
       description: 'Determines how the requests inside the generated collection will be named.' +
       ' If “Fallback” is selected, the request will be named after one of the following schema' +
       ' values: `description`, `operationid`, `url`.'
+    },
+    folderStrategy: {
+      name: 'Folder organization',
+      type: 'enum',
+      default: 'Paths',
+      availableOptions: ['Paths', 'Tags'],
+      description: 'Select whether to create folders according to the spec’s paths or tags.'
+    },
+    optimizeConversion: {
+      name: 'Optimize conversion',
+      id: 'optimizeConversion',
+      type: 'boolean',
+      default: true,
+      description: 'Optimizes conversion for large specification, disabling this option might affect' +
+        ' the performance of conversion.'
+    },
+    includeAuthInfoInExample: {
+      name: 'Include auth info in example requests',
+      type: 'boolean',
+      default: true,
+      description: 'Select whether to include authentication parameters in the example request'
     }
   };
 
