@@ -171,3 +171,17 @@ describe('Must return meta data for a swagger schema', function() {
     done();
   });
 });
+
+describe('The converter should fix patchable erros and not throw errors', function () {
+  it('petstorePatchable.json', function(done) {
+    var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'petstorePatchable.json'), 'utf8');
+
+    Converter.getMetaData({ type: 'string', data: sampleString }, (err, result) => {
+      expect(err).to.be.null;
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+    });
+    done();
+  });
+});
