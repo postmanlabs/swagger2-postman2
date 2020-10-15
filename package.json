@@ -11,7 +11,7 @@
   "dependencies": {
     "js-yaml": "3.13.1",
     "lodash": "4.17.19",
-    "openapi-to-postmanv2": "^1.2.7",
+    "openapi-to-postmanv2": "^2.0.0",
     "swagger2openapi": "7.0.2"
   },
   "repository": {
@@ -36,6 +36,9 @@
     "istanbul": "0.4.5",
     "mocha": "5.2.0",
     "nsp": "3.2.1"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "com_postman_plugin": {
     "plugin_type": "importer",
