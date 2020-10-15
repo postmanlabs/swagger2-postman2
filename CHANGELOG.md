@@ -1,4 +1,9 @@
 # Swagger2-Postman Changelog
+#### v2.0.0 (October 15, 2020)
+* Updated openapi-to-postmanv2 to 2.0.0
+* Fixed patchable errors thrown for some missing schema properties.
+* Bumped up few dev-dependency versions.
+
 #### v1.0.3 (September 9, 2020)
 * Added support for new options added in latest openapi-to-postmanv2.
 
