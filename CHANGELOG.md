@@ -1,4 +1,8 @@
 # Swagger2-Postman Changelog
+
+#### v2.0.1 (March 12, 2021)
+* Fixed issue where conversion failed for YAML specification with anchors.
+
 #### v2.0.0 (October 15, 2020)
 * Updated openapi-to-postmanv2 to 2.0.0
 * Fixed patchable errors thrown for some missing schema properties.
