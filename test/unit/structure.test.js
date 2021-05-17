@@ -5,60 +5,76 @@ const optionIds = [
     'collapseFolders',
     'requestParametersResolution',
     'exampleParametersResolution',
-    'folderStrategy',
     'indentCharacter',
-    'requestNameSource'
+    'requestNameSource',
+    'folderStrategy',
+    'optimizeConversion',
+    'includeAuthInfoInExample'
   ],
   expectedOptions = {
     collapseFolders: {
-      name: 'Toggle for collapsing folder for long routes',
+      name: 'Collapse redundant folders',
       type: 'boolean',
       default: true,
-      description: 'Determines whether the importer should attempt to collapse redundant folders into one.' +
-       'Folders are redundant if they have only one child element, and don\'t' +
-       'have any folder-level data to persist.'
+      description: 'Importing will collapse all folders that have only one child element and lack ' +
+      'persistent folder-level data.'
     },
     requestParametersResolution: {
-      name: 'Set root request parameters type',
+      name: 'Request parameter generation',
       type: 'enum',
-      default: 'schema',
-      availableOptions: ['example', 'schema'],
-      description: 'Determines how request parameters (query parameters, path parameters, headers,' +
-       'or the request body) should be generated. Setting this to schema will cause the importer to' +
-       'use the parameter\'s schema as an indicator; `example` will cause the example (if provided)' +
-       'to be picked up.'
+      default: 'Schema',
+      availableOptions: ['Example', 'Schema'],
+      description: 'Select whether to generate the request parameters based on the' +
+      ' [schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject) or the' +
+      ' [example](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#exampleObject)' +
+      ' in the schema.'
     },
     exampleParametersResolution: {
-      name: 'Set example request and response parameters type',
+      name: 'Response parameter generation',
       type: 'enum',
-      default: 'example',
-      availableOptions: ['example', 'schema'],
-      description: 'Determines how response parameters (query parameters, path parameters, headers,' +
-       'or the request body) should be generated. Setting this to schema will cause the importer to' +
-       'use the parameter\'s schema as an indicator; `example` will cause the example (if provided)' +
-       'to be picked up.'
-    },
-    folderStrategy: {
-      name: 'Set folder strategy',
-      type: 'enum',
-      default: 'paths',
-      availableOptions: ['paths', 'tags'],
-      description: 'Determines whether the importer should attempt to create the folders according' +
-       'to paths or tags which are given in the spec.'
+      default: 'Example',
+      availableOptions: ['Example', 'Schema'],
+      description: 'Select whether to generate the response parameters based on the' +
+      ' [schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject) or the' +
+      ' [example](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#exampleObject)' +
+      ' in the schema.'
     },
     indentCharacter: {
       name: 'Set indent character',
       type: 'enum',
-      default: ' ',
-      availableOptions: [' ', '\t'],
+      default: 'Space',
+      availableOptions: ['Space', 'Tab'],
       description: 'Option for setting indentation character'
     },
     requestNameSource: {
-      name: 'Set request name source',
+      name: 'Naming requests',
       type: 'enum',
-      default: 'fallback',
-      availableOptions: ['url', 'uKnown', 'fallback'],
-      description: 'Option for setting source for a request name'
+      default: 'Fallback',
+      availableOptions: ['Url', 'Fallback'],
+      description: 'Determines how the requests inside the generated collection will be named.' +
+      ' If “Fallback” is selected, the request will be named after one of the following schema' +
+      ' values: `description`, `operationid`, `url`.'
+    },
+    folderStrategy: {
+      name: 'Folder organization',
+      type: 'enum',
+      default: 'Paths',
+      availableOptions: ['Paths', 'Tags'],
+      description: 'Select whether to create folders according to the spec’s paths or tags.'
+    },
+    optimizeConversion: {
+      name: 'Optimize conversion',
+      id: 'optimizeConversion',
+      type: 'boolean',
+      default: true,
+      description: 'Optimizes conversion for large specification, disabling this option might affect' +
+        ' the performance of conversion.'
+    },
+    includeAuthInfoInExample: {
+      name: 'Include auth info in example requests',
+      type: 'boolean',
+      default: true,
+      description: 'Select whether to include authentication parameters in the example request'
     }
   };
 
