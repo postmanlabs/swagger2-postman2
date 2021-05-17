@@ -3,6 +3,7 @@ var expect = require('chai').expect,
   fs = require('fs'),
   path = require('path'),
   VALID_SWAGGER_PATH = '../data/valid_swagger',
+  VALID_SWAGGER_YAML_PATH = '../data/valid_swagger_yaml',
   INVALID_SWAGGER_PATH = '../data/invalid_swagger';
 
 /* global describe, it */
@@ -66,6 +67,22 @@ describe('The converter must convert a swagger string', function() {
     var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
 
     Converter.convert({ type: 'string', data: sampleString }, {}, (err, result) => {
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].data).to.have.property('info');
+      expect(result.output[0].data).to.have.property('item');
+    });
+    done();
+  });
+});
+
+describe('The converter must convert a swagger document with YAML anchors', function() {
+  it('yaml_anchor.yaml', function(done) {
+    var sampleYaml = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_YAML_PATH, 'yaml_anchor.yaml'), 'utf8');
+
+    Converter.convert({ type: 'string', data: sampleYaml }, {}, (err, result) => {
+      expect(err).to.be.null;
       expect(result.result).to.equal(true);
       expect(result.output.length).to.equal(1);
       expect(result.output[0].type).to.have.equal('collection');
