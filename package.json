@@ -11,7 +11,7 @@
   "dependencies": {
     "js-yaml": "3.13.1",
     "lodash": "4.17.19",
-    "openapi-to-postmanv2": "^2.7.0",
+    "openapi-to-postmanv2": "^2.0.0",
     "swagger2openapi": "7.0.2"
   },
   "repository": {
