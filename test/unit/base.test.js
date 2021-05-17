@@ -1,9 +1,9 @@
 var expect = require('chai').expect,
   Converter = require('../../index.js'),
-  Helpers = require('../../lib/helpers.js'),
   fs = require('fs'),
   path = require('path'),
   VALID_SWAGGER_PATH = '../data/valid_swagger',
+  VALID_SWAGGER_YAML_PATH = '../data/valid_swagger_yaml',
   INVALID_SWAGGER_PATH = '../data/invalid_swagger';
 
 /* global describe, it */
@@ -45,73 +45,6 @@ describe('The converter must identify invalid specs: ', function () {
   });
 });
 
-
-//Helpers
-describe.skip('Helpers', function () {
-  it('getBasePath should return the correct basePath', function() {
-    var swagger = {
-        host: 'getpostman.com',
-        basePath: '/api',
-        schemes: ['https']
-      },
-      basePath = Helpers.getBasePath(swagger);
-
-    expect(basePath).to.equal('https://getpostman.com/api/');
-  });
-
-  it('handleParams should return the correct basePath for http', function() {
-    var swagger = {
-        host: 'getpostman.com',
-        basePath: '/api',
-        schemes: ['http']
-      },
-      basePath = Helpers.getBasePath(swagger);
-
-    expect(basePath).to.equal('http://getpostman.com/api/');
-  });
-
-  it('should generate the correct request names for PathItems', function(done) {
-    var swagger = {
-      swagger: '2.0',
-      host: 'getpostman.com',
-      basePath: '/api',
-      schemes: ['http'],
-      info: {
-        description: 'My API',
-        version: '1.0.0',
-        title: 'My API',
-        termsOfService: 'http://www.domain.com',
-        contact: {
-          name: 'support@domain.com'
-        }
-      },
-      paths: {
-        req1: {
-          post: {
-            operationId: 'req1'
-          }
-        },
-        req2: {
-          post: {
-          }
-        },
-        req3: {
-          post: {
-            summary: 'req3'
-          }
-        }
-      }
-    };
-
-    Converter.convert({ type: 'json', data: swagger }, {}, (err, result) => {
-      expect(result.output[0].data.item[0].name).to.equal('req1'); // from operationId
-      expect(result.output[0].data.item[1].name).to.equal('http://getpostman.com/api/req2'); // from URL
-      expect(result.output[0].data.item[2].name).to.equal('req3'); // from summary
-      done();
-    });
-  });
-});
-
 describe('The converter must convert a swagger object', function() {
   it('Sampleswagger.json', function(done) {
     var samplePath = JSON.parse(
@@ -134,6 +67,22 @@ describe('The converter must convert a swagger string', function() {
     var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
 
     Converter.convert({ type: 'string', data: sampleString }, {}, (err, result) => {
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].data).to.have.property('info');
+      expect(result.output[0].data).to.have.property('item');
+    });
+    done();
+  });
+});
+
+describe('The converter must convert a swagger document with YAML anchors', function() {
+  it('yaml_anchor.yaml', function(done) {
+    var sampleYaml = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_YAML_PATH, 'yaml_anchor.yaml'), 'utf8');
+
+    Converter.convert({ type: 'string', data: sampleYaml }, {}, (err, result) => {
+      expect(err).to.be.null;
       expect(result.result).to.equal(true);
       expect(result.output.length).to.equal(1);
       expect(result.output[0].type).to.have.equal('collection');
@@ -198,6 +147,58 @@ describe('the converter', function () {
       done();
     });
   });
+
+  it('should name the requests based on requestNameSource parameter, value=`URL`', function (done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger3.json');
+
+    Converter.convert({ type: 'file', data: samplePath }, { requestNameSource: 'URL' }, function(err, convertResult) {
+      let request = convertResult.output[0].data.item[0].request;
+
+      expect(err).to.be.null;
+      expect(request.name).to.equal('{{baseUrl}}/');
+      done();
+    });
+  });
+
+  it('should name the requests based on requestNameSource parameter, value=`Fallback`', function (done) {
+    var samplePath = path.join(__dirname, VALID_SWAGGER_PATH, 'swagger3.json');
+
+    Converter.convert({ type: 'file', data: samplePath },
+      { requestNameSource: 'Fallback' }, function(err, convertResult) {
+        let request = convertResult.output[0].data.item[0].request;
+
+        expect(err).to.be.null;
+        expect(request.name).to.equal('List API versions');
+        done();
+      });
+  });
 });
 
+describe('Must return meta data for a swagger schema', function() {
+  it('Sampleswagger.json', function(done) {
+    var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'sampleswagger.json'), 'utf8');
 
+    Converter.getMetaData({ type: 'string', data: sampleString }, (err, result) => {
+      expect(result.result).to.equal(true);
+      expect(result.name).to.equal('Swagger Petstore');
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+      expect(result.output[0].name).to.have.equal('Swagger Petstore');
+    });
+    done();
+  });
+});
+
+describe('The converter should fix patchable erros and not throw errors', function () {
+  it('petstorePatchable.json', function(done) {
+    var sampleString = fs.readFileSync(path.join(__dirname, VALID_SWAGGER_PATH, 'petstorePatchable.json'), 'utf8');
+
+    Converter.getMetaData({ type: 'string', data: sampleString }, (err, result) => {
+      expect(err).to.be.null;
+      expect(result.result).to.equal(true);
+      expect(result.output.length).to.equal(1);
+      expect(result.output[0].type).to.have.equal('collection');
+    });
+    done();
+  });
+});
