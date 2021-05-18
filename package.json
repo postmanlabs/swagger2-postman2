@@ -6,7 +6,8 @@
   "scripts": {
     "test": "scripts/test.sh",
     "test-lint": "scripts/test-lint.sh",
-    "test-unit": "scripts/test-unit.sh"
+    "test-unit": "scripts/test-unit.sh",
+    "release": "scripts/release.sh"
   },
   "dependencies": {
     "js-yaml": "3.13.1",
