@@ -1,5 +1,8 @@
 # Swagger2-Postman Changelog
 
+#### v2.1.0 (March 04, 2022)
+* Bumped up dependencies versions.
+
 #### v2.0.1 (March 12, 2021)
 * Fixed issue where conversion failed for YAML specification with anchors.
 
