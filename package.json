@@ -1,18 +1,19 @@
 {
   "name": "swagger2-to-postmanv2",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "A module to convert swagger 2.0 specs to Postman Collection Format v2",
   "main": "index.js",
   "scripts": {
     "test": "scripts/test.sh",
     "test-lint": "scripts/test-lint.sh",
-    "test-unit": "scripts/test-unit.sh"
+    "test-unit": "scripts/test-unit.sh",
+    "release": "scripts/release.sh"
   },
   "dependencies": {
     "js-yaml": "3.13.1",
-    "lodash": "4.17.19",
-    "openapi-to-postmanv2": "^2.0.0",
-    "swagger2openapi": "7.0.2"
+    "lodash": "4.17.21",
+    "openapi-to-postmanv2": "^3.1.0",
+    "swagger2openapi": "7.0.8"
   },
   "repository": {
     "type": "git",
@@ -31,10 +32,10 @@
   "homepage": "https://github.com/postmanlabs/swagger2-postman2",
   "devDependencies": {
     "chai": "4.2.0",
-    "eslint": "5.16.0",
+    "eslint": "6.8.0",
     "eslint-plugin-security": "1.4.0",
     "istanbul": "0.4.5",
-    "mocha": "5.2.0",
+    "mocha": "7.2.0",
     "nsp": "3.2.1"
   },
   "engines": {
